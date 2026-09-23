@@ -1,0 +1,8 @@
+{
+  "name": "gulf-resume-tailorer",
+  "version": "1.0.0",
+  "description": "AI Resume & Cover Letter Generator for Gulf Professionals",
+  "engines": {
+    "node": "24.x"
+  }
+}

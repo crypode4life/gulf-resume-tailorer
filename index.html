@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume & Cover Letter Tailorer - Crypode</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --dark: #0A0E27;
+            --darker: #050812;
+            --text: #E8E8E8;
+            --accent: #1a1f3a;
+            --success: #10B981;
+            --warning: #F59E0B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--gold);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 15px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: var(--accent);
+            border: 2px solid var(--gold);
+            color: var(--text);
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--gold);
+            color: var(--darker);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 1000px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--accent);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            background: var(--darker);
+            border: 1px solid var(--gold);
+            color: var(--text);
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .section-title {
+            color: var(--gold);
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--gold);
+            color: var(--darker);
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background: #E8C547;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            text-transform: capitalize;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gold);
+            color: var(--darker);
+        }
+
+        .preview {
+            background: var(--darker);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 25px;
+            max-height: 600px;
+            overflow-y: auto;
+            line-height: 1.7;
+        }
+
+        .preview h3 {
+            color: var(--gold);
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+
+        .preview p {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--gold);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--accent);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #EF4444;
+            padding: 15px;
+            border-radius: 6px;
+            color: #FECACA;
+            margin: 15px 0;
+        }
+
+        .success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success);
+            padding: 15px;
+            border-radius: 6px;
+            color: #A7F3D0;
+            margin: 15px 0;
+        }
+
+        .download-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .download-btn {
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--accent);
+            color: var(--text);
+            opacity: 0.7;
+            font-size: 0.9em;
+        }
+
+        .pricing-note {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .pricing-note strong {
+            color: var(--gold);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📄 Resume & Cover Letter Tailorer</h1>
+            <p style="color: var(--text); opacity: 0.9;">AI-powered professional documents for Gulf careers</p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: var(--gold);">Part of <a href="https://crypode.com" target="_blank" style="color: var(--gold); text-decoration: none;">Crypode</a></p>
+        </header>
+
+        <div class="pricing-note">
+            <strong>💼 Paid Tool</strong> | Premium AI-generated resumes and cover letters tailored to Gulf job market
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">Resume Builder</button>
+            <button class="tab-btn" onclick="switchTab(1)">Cover Letter</button>
+        </div>
+
+        <!-- RESUME TAB -->
+        <div class="tab-content active">
+            <div class="layout">
+                <!-- Resume Input -->
+                <div class="card">
+                    <h2>Your Professional Info</h2>
+
+                    <div class="section-title">Personal Details</div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="fullName" placeholder="Fahad Al Rawahi">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" placeholder="fahad@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="phone" placeholder="+968 9123 4567">
+                    </div>
+                    <div class="form-group">
+                        <label>LinkedIn / Professional Profile</label>
+                        <input type="text" id="linkedin" placeholder="linkedin.com/in/fahad">
+                    </div>
+
+                    <div class="section-title">Career Profile</div>
+                    <div class="form-group">
+                        <label>Current Job Title</label>
+                        <input type="text" id="jobTitle" placeholder="Technical Services Supervisor">
+                    </div>
+                    <div class="form-group">
+                        <label>Years of Experience</label>
+                        <input type="text" id="experience" placeholder="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Key Skills (comma-separated)</label>
+                        <textarea id="skills" placeholder="Project Management, Leadership, Technical Support, Aviation, Customer Service"></textarea>
+                    </div>
+
+                    <div class="section-title">Work Experience</div>
+                    <div class="form-group">
+                        <label>Company & Position Details</label>
+                        <textarea id="workExperience" placeholder="Company Name, Position, Years, Key Achievements&#10;Example: ABC Airlines, Technical Services Supervisor, 2018-Present, Led 15-person team, reduced downtime by 30%"></textarea>
+                    </div>
+
+                    <div class="section-title">Education & Certifications</div>
+                    <div class="form-group">
+                        <label>Education & Certifications</label>
+                        <textarea id="education" placeholder="Bachelor's Degree in..., Certification XYZ, Year"></textarea>
+                    </div>
+
+                    <div class="section-title">Target Role</div>
+                    <div class="form-group">
+                        <label>Target Job Title (optional)</label>
+                        <input type="text" id="targetRole" placeholder="Operations Manager">
+                    </div>
+
+                    <button onclick="generateResume()">Generate Resume</button>
+                    <button class="btn-secondary" onclick="resetResume()">Reset</button>
+                </div>
+
+                <!-- Resume Preview -->
+                <div class="card">
+                    <h2>Resume Preview</h2>
+                    <div id="resumePreview">
+                        <p style="color: var(--text); opacity: 0.7; text-align: center; padding: 40px 0;">
+                            Fill in your details and click "Generate Resume" to see your AI-powered resume
+                        </p>
+                    </div>
+                    <div class="download-buttons" id="resumeDownloads" style="display: none;">
+                        <button class="download-btn" onclick="downloadAsText('resume')">📥 Text</button>
+                        <button class="download-btn btn-secondary" onclick="copyToClipboard('resumePreview')">📋 Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COVER LETTER TAB -->
+        <div class="tab-content">
+            <div class="layout">
+                <!-- Cover Letter Input -->
+                <div class="card">
+                    <h2>Job & Letter Details</h2>
+
+                    <div class="section-title">Your Info (from Resume)</div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="clFullName" placeholder="Fahad Al Rawahi">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="clEmail" placeholder="fahad@example.com">
+                    </div>
+
+                    <div class="section-title">Target Job</div>
+                    <div class="form-group">
+                        <label>Job Title</label>
+                        <input type="text" id="clJobTitle" placeholder="Operations Manager">
+                    </div>
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" id="clCompanyName" placeholder="Gulf Energy Company">
+                    </div>
+                    <div class="form-group">
+                        <label>Hiring Manager Name (optional)</label>
+                        <input type="text" id="hiringManager" placeholder="Mr. Ahmed Al Balushi">
+                    </div>
+
+                    <div class="section-title">Job Description</div>
+                    <div class="form-group">
+                        <label>Paste Job Description</label>
+                        <textarea id="jobDescription" placeholder="Paste the full job posting here. This helps AI tailor the cover letter to specific requirements and keywords..."></textarea>
+                    </div>
+
+                    <div class="section-title">Your Background</div>
+                    <div class="form-group">
+                        <label>Relevant Achievements (brief)</label>
+                        <textarea id="clAchievements" placeholder="Led team of 15, 30% efficiency improvement, 5+ years operations experience"></textarea>
+                    </div>
+
+                    <button onclick="generateCoverLetter()">Generate Cover Letter</button>
+                    <button class="btn-secondary" onclick="resetCoverLetter()">Reset</button>
+                </div>
+
+                <!-- Cover Letter Preview -->
+                <div class="card">
+                    <h2>Cover Letter Preview</h2>
+                    <div id="coverLetterPreview">
+                        <p style="color: var(--text); opacity: 0.7; text-align: center; padding: 40px 0;">
+                            Fill in the job details and click "Generate Cover Letter" to see your customized letter
+                        </p>
+                    </div>
+                    <div class="download-buttons" id="clDownloads" style="display: none;">
+                        <button class="download-btn" onclick="downloadAsText('coverLetter')">📥 Text</button>
+                        <button class="download-btn btn-secondary" onclick="copyToClipboard('coverLetterPreview')">📋 Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>📄 <strong>Disclaimer:</strong> Generated documents are AI-assisted and should be reviewed and personalized before submission. This tool does not guarantee job offers.</p>
+        </footer>
+    </div>
+
+    <script>
+        function switchTab(index) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-content')[index].classList.add('active');
+            document.querySelectorAll('.tab-btn')[index].classList.add('active');
+        }
+
+        function resetResume() {
+            document.getElementById('fullName').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('linkedin').value = '';
+            document.getElementById('jobTitle').value = '';
+            document.getElementById('experience').value = '';
+            document.getElementById('skills').value = '';
+            document.getElementById('workExperience').value = '';
+            document.getElementById('education').value = '';
+            document.getElementById('targetRole').value = '';
+        }
+
+        function resetCoverLetter() {
+            document.getElementById('clFullName').value = '';
+            document.getElementById('clEmail').value = '';
+            document.getElementById('clJobTitle').value = '';
+            document.getElementById('clCompanyName').value = '';
+            document.getElementById('hiringManager').value = '';
+            document.getElementById('jobDescription').value = '';
+            document.getElementById('clAchievements').value = '';
+        }
+
+        async function generateResume() {
+            const data = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                linkedin: document.getElementById('linkedin').value,
+                jobTitle: document.getElementById('jobTitle').value,
+                experience: document.getElementById('experience').value,
+                skills: document.getElementById('skills').value,
+                workExperience: document.getElementById('workExperience').value,
+                education: document.getElementById('education').value,
+                targetRole: document.getElementById('targetRole').value,
+            };
+
+            if (!data.fullName || !data.email || !data.jobTitle) {
+                showError('resumePreview', 'Please fill in Name, Email, and Current Job Title');
+                return;
+            }
+
+            document.getElementById('resumePreview').innerHTML = '<div class="loading"><span class="spinner"></span>Generating professional resume...</div>';
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: `Create a professional resume for a Gulf professional. Format as clean, modern professional resume with proper sections. Include all details provided and optimize for ATS and Gulf job market. Target role: ${data.targetRole || data.jobTitle}.
+
+Name: ${data.fullName}
+Email: ${data.email}
+Phone: ${data.phone}
+LinkedIn: ${data.linkedin}
+Current Title: ${data.jobTitle}
+Experience: ${data.experience} years
+Skills: ${data.skills}
+Work Experience: ${data.workExperience}
+Education: ${data.education}
+
+Create a professional, well-formatted resume that highlights achievements, uses metrics, and emphasizes Gulf market relevance. Do NOT include markdown formatting, just clean text.`
+                    })
+                });
+
+                const result = await response.json();
+                const textContent = result.content.find(block => block.type === 'text');
+                if (!textContent) throw new Error('No response');
+
+                const resume = textContent.text.trim();
+                displayResume(resume);
+                document.getElementById('resumeDownloads').style.display = 'grid';
+                window.resumeData = resume;
+            } catch (e) {
+                console.error('Error:', e);
+                showError('resumePreview', 'Failed to generate resume. Please try again.');
+            }
+        }
+
+        async function generateCoverLetter() {
+            const data = {
+                fullName: document.getElementById('clFullName').value,
+                email: document.getElementById('clEmail').value,
+                jobTitle: document.getElementById('clJobTitle').value,
+                company: document.getElementById('clCompanyName').value,
+                hiringManager: document.getElementById('hiringManager').value,
+                jobDesc: document.getElementById('jobDescription').value,
+                achievements: document.getElementById('clAchievements').value,
+            };
+
+            if (!data.fullName || !data.jobTitle || !data.company) {
+                showError('coverLetterPreview', 'Please fill in Name, Job Title, and Company');
+                return;
+            }
+
+            document.getElementById('coverLetterPreview').innerHTML = '<div class="loading"><span class="spinner"></span>Generating personalized cover letter...</div>';
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: `Write a professional cover letter for a Gulf professional applying for a job. 
+
+Applicant: ${data.fullName}
+Email: ${data.email}
+Target Position: ${data.jobTitle}
+Company: ${data.company}
+Hiring Manager: ${data.hiringManager || 'Hiring Team'}
+Achievements: ${data.achievements}
+
+Job Description:
+${data.jobDesc}
+
+Create a personalized, engaging cover letter that:
+- References specific requirements from the job description
+- Highlights relevant achievements and skills
+- Shows genuine interest in the company
+- Uses professional Gulf business tone
+- Is 3-4 paragraphs, ready to send
+
+Do NOT include markdown formatting, just clean professional text.`
+                    })
+                });
+
+                const result = await response.json();
+                const textContent = result.content.find(block => block.type === 'text');
+                if (!textContent) throw new Error('No response');
+
+                const letter = textContent.text.trim();
+                displayCoverLetter(letter);
+                document.getElementById('clDownloads').style.display = 'grid';
+                window.coverLetterData = letter;
+            } catch (e) {
+                console.error('Error:', e);
+                showError('coverLetterPreview', 'Failed to generate cover letter. Please try again.');
+            }
+        }
+
+        function displayResume(resume) {
+            const preview = document.getElementById('resumePreview');
+            preview.innerHTML = `<pre style="font-family: inherit; white-space: pre-wrap; word-wrap: break-word; color: var(--text);">${escapeHtml(resume)}</pre>`;
+        }
+
+        function displayCoverLetter(letter) {
+            const preview = document.getElementById('coverLetterPreview');
+            preview.innerHTML = `<pre style="font-family: inherit; white-space: pre-wrap; word-wrap: break-word; color: var(--text);">${escapeHtml(letter)}</pre>`;
+        }
+
+        function showError(containerId, message) {
+            document.getElementById(containerId).innerHTML = `<div class="error">${message}</div>`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(() => {
+                alert('Failed to copy');
+            });
+        }
+
+        function downloadAsText(type) {
+            const data = type === 'resume' ? window.resumeData : window.coverLetterData;
+            if (!data) return;
+            
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+            element.setAttribute('download', type === 'resume' ? 'Resume.txt' : 'CoverLetter.txt');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+    </script>
+</body>
+</html>
