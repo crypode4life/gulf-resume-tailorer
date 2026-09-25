@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="crypode-build" content="crypode-build-2026-09-25c">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Resume & Cover Letter Tailorer — AI-powered professional documents optimized for Gulf careers. ATS-friendly formatting.">
@@ -261,10 +262,7 @@ const CrypodeLicense = (() => {
     const el = card(); if (!el) return; const L = t();
     if (S.justBought) {
       el.className = 'license-card';
-      el.innerHTML = `<h3>${L.thanks}</h3><p style="margin-bottom:0">${L.save}</p>
-        <div class="license-keybox"><code id="licenseKeyText">${esc(S.key)}</code>
-          <button class="license-btn ghost" onclick="CrypodeLicense.copy(this)">${L.copy}</button></div>
-        <button class="license-btn buy" onclick="CrypodeLicense.done()">${L.cont}</button>`;
+      el.innerHTML = successHtml();
       return;
     }
     if (S.valid) {
@@ -275,7 +273,7 @@ const CrypodeLicense = (() => {
     }
     const price = S.cfg && Number(S.cfg.price) > 0 ? `<div class="license-price">$${esc(S.cfg.price)}<small>${L.once}</small></div>` : '';
     el.className = 'license-card';
-    el.innerHTML = `<h3>${L.title}</h3><p>${L.body}</p>
+    el.innerHTML = `<div class="lc-locked"><h3>${L.title}</h3><p>${L.body}</p>
       <div class="license-cols">
         <div>${price}<div id="paypal-buttons"></div></div>
         <div><div class="license-sub">${L.have}</div>
@@ -284,7 +282,7 @@ const CrypodeLicense = (() => {
             <button class="license-btn ghost" onclick="CrypodeLicense.submit()">${L.unlock}</button>
           </div></div>
       </div>
-      <div class="license-msg" id="licenseMsg"></div>`;
+      <div class="license-msg" id="licenseMsg"></div></div>`;
     document.getElementById('licenseInput').addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
     if (text) msg(text, isErr);
     mountPayPal();
@@ -310,15 +308,57 @@ const CrypodeLicense = (() => {
     document.body.style.overflow = ''; document.documentElement.style.overflow = '';
   }
 
-  async function finishPurchase() {
-    const b = S.buttons; S.buttons = null;
-    if (b && typeof b.close === 'function') {
-      try { await Promise.race([b.close(), new Promise(r => setTimeout(r, 1500))]); } catch (e) {}
-    }
-    sweepOverlays();
-    render();
-    setTimeout(sweepOverlays, 600); setTimeout(sweepOverlays, 2000);
-    const c = card(); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  function successHtml() {
+    const L = t();
+    return `<div class="lc-success"><h3>${L.thanks}</h3><p style="margin-bottom:0">${L.save}</p>
+        <div class="license-keybox"><code id="licenseKeyText">${esc(S.key)}</code>
+          <button class="license-btn ghost" onclick="CrypodeLicense.copy(this)">${L.copy}</button></div>
+        <button class="license-btn buy" onclick="CrypodeLicense.done()">${L.cont}</button></div>`;
+  }
+
+  // Anything PayPal adds to the page that could block clicks: find it and remove it
+  function isOurs(n) {
+    if (!n || n === document.body) return true;
+    if (['NAV','HEADER','SECTION','MAIN','FOOTER','SCRIPT','STYLE','LINK'].includes(n.tagName)) return true;
+    if (n.id === 'cpPrintSheet') return true;
+    const c = card(); return !!(c && n.contains(c));
+  }
+  function topLevel(n) { while (n && n.parentElement && n.parentElement !== document.body) n = n.parentElement; return n; }
+  function unblock() {
+    document.querySelectorAll('[id^="paypal-overlay-"], .paypal-checkout-sandbox, .paypal-checkout-overlay, [id^="__zoid"], .zoid-outlet')
+      .forEach(n => { const tl = topLevel(n); if (tl && !isOurs(tl)) tl.style.display = 'none'; });
+    [document.documentElement, document.body].forEach(n => { n.style.overflow = ''; n.style.pointerEvents = ''; n.removeAttribute('inert'); });
+    Array.from(document.body.children).forEach(n => { if (isOurs(n)) { n.removeAttribute('inert'); if (n.getAttribute('aria-hidden') === 'true') n.removeAttribute('aria-hidden'); n.style.pointerEvents = ''; } });
+    // Whatever sits on top of our buttons and isn't part of our page gets hidden
+    document.querySelectorAll('#licenseCard .license-btn').forEach(btn => {
+      for (let i = 0; i < 6; i++) {
+        const r = btn.getBoundingClientRect(); if (!r.width) break;
+        const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        if (!hit || btn.contains(hit)) break;
+        const tl = topLevel(hit); if (!tl || isOurs(tl)) break;
+        tl.style.display = 'none';
+      }
+    });
+  }
+  // For a short time after payment, a click that lands on a foreign layer removes it
+  function guardClicks(ms) {
+    const h = e => { const tl = topLevel(e.target); if (tl && !isOurs(tl)) { tl.style.display = 'none'; e.preventDefault(); e.stopPropagation(); } };
+    document.addEventListener('pointerdown', h, true);
+    setTimeout(() => document.removeEventListener('pointerdown', h, true), ms);
+  }
+
+  function finishPurchase() {
+    const el = card(); if (!el) return;
+    // Hide (don't remove) the PayPal section so PayPal can finish cleaning up on its own
+    const locked = el.querySelector('.lc-locked');
+    if (locked) {
+      locked.style.display = 'none';
+      const old = el.querySelector('.lc-success'); if (old) old.remove();
+      el.insertAdjacentHTML('beforeend', successHtml());
+    } else { render(); }
+    [0, 300, 1000, 2500, 5000].forEach(ms => setTimeout(unblock, ms));
+    guardClicks(15000);
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   async function mountPayPal() {
@@ -366,7 +406,7 @@ const CrypodeLicense = (() => {
     try { navigator.clipboard.writeText(S.key).then(done, () => selectKey()); } catch (e) { selectKey(); }
   }
   function selectKey() { const r = document.createRange(); r.selectNodeContents(document.getElementById('licenseKeyText')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
-  function done() { S.justBought = false; render(); }
+  function done() { S.justBought = false; render(); unblock(); }
   function reset() { S = { ...S, key: null, valid: false, info: null, justBought: false }; save(null); render(); }
 
   function handleRejected(status, body) {
