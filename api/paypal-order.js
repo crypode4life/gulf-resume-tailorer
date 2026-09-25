@@ -72,6 +72,6 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Unknown action' });
   } catch (e) {
     console.error('paypal-order error:', e);
-    return res.status(500).json({ error: 'Server error, please contact support@crypode.com with your PayPal receipt' });
+    return res.status(500).json({ error: 'Server error, please contact crypode4life@gmail.com with your PayPal receipt' });
   }
 };
