@@ -73,7 +73,7 @@
   .license-msg { margin-top: 14px; font-size: 0.88rem; min-height: 1.2em; color: var(--text-muted); }
   .license-msg.err { color: #E07A6A; }
   .license-keybox { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; background: rgba(201,168,76,0.08); border: 1px dashed rgba(201,168,76,0.5); padding: 16px 18px; margin: 18px 0; }
-  .license-keybox code { flex: 1 1 240px; font-family: 'SFMono-Regular', Consolas, monospace; color: var(--gold-light); font-size: 1.15rem; letter-spacing: 2px; word-break: break-all; }
+  .license-keybox code { user-select: all; -webkit-user-select: all; cursor: text; flex: 1 1 240px; font-family: 'SFMono-Regular', Consolas, monospace; color: var(--gold-light); font-size: 1.15rem; letter-spacing: 2px; word-break: break-all; }
   .license-card.unlocked { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
   .license-card.unlocked .ok { color: var(--gold); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
   .license-card.unlocked .who { color: var(--text-muted); font-size: 0.88rem; margin-left: 10px; letter-spacing: 0; text-transform: none; }
@@ -303,12 +303,30 @@ const CrypodeLicense = (() => {
     return S.sdk;
   }
 
+  // Remove PayPal's checkout overlay if it's left behind (it blocks clicks on the page)
+  function sweepOverlays() {
+    document.querySelectorAll('[id^="paypal-overlay-"], .paypal-checkout-sandbox, .paypal-checkout-overlay')
+      .forEach(n => { try { n.remove(); } catch (e) {} });
+    document.body.style.overflow = ''; document.documentElement.style.overflow = '';
+  }
+
+  async function finishPurchase() {
+    const b = S.buttons; S.buttons = null;
+    if (b && typeof b.close === 'function') {
+      try { await Promise.race([b.close(), new Promise(r => setTimeout(r, 1500))]); } catch (e) {}
+    }
+    sweepOverlays();
+    render();
+    setTimeout(sweepOverlays, 600); setTimeout(sweepOverlays, 2000);
+    const c = card(); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   async function mountPayPal() {
     const box = document.getElementById('paypal-buttons'); if (!box) return;
     try {
       const paypal = await loadSdk();
       if (!document.body.contains(box)) return;
-      await paypal.Buttons({
+      S.buttons = paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay', height: 45 },
         createOrder: async () => {
           const r = await post('/api/paypal-order', { action: 'create' }); const d = await r.json();
@@ -319,12 +337,14 @@ const CrypodeLicense = (() => {
           try {
             const r = await post('/api/paypal-order', { action: 'capture', orderID: data.orderID }); const d = await r.json();
             if (!d.license) throw new Error(d.error || 'no licence');
-            S.key = d.license; S.valid = true; S.info = { email: d.email }; S.justBought = true; save(d.license); render();
-            card().scrollIntoView({ behavior: 'smooth', block: 'center' });
+            S.key = d.license; S.valid = true; S.info = { email: d.email }; S.justBought = true; save(d.license);
+            // Let PayPal finish closing its window/overlay BEFORE we replace its button
+            setTimeout(finishPurchase, 0);
           } catch (e) { msg(t().capfail, true); }
         },
         onError: () => msg(t().payfail, true)
-      }).render(box);
+      });
+      await S.buttons.render(box);
     } catch (e) { msg(t().ppfail, true); }
   }
 
