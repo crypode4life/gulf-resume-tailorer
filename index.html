@@ -123,6 +123,12 @@
     #cpPrintSheet .result-actions { display: none !important; }
     #cpPrintSheet .cp-foot { margin-top: 26px; padding-top: 10px; border-top: 1px solid #ddd; font-size: 8.5pt; color: #666 !important; }
   }
+
+  /* ── Dropdowns: readable on every system (Windows shows option lists on white by default) ── */
+  select { color-scheme: dark; }
+  select option, select optgroup { background-color: #1C1C1C; color: #F5F0E8; }
+  select option:checked { background-color: #C9A84C; color: #0D0D0D; }
+  select option:disabled { color: #888880; }
 </style>
 </head>
 <body>
