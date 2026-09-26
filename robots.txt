@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://gulf-resume-tailorer.vercel.app/sitemap.xml
+Sitemap: https://resume.crypode.com/sitemap.xml
