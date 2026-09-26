@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://gulf-resume-tailorer.vercel.app/sitemap.xml
