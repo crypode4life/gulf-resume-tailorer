@@ -156,6 +156,8 @@
   select option, select optgroup { background-color: #1C1C1C; color: #F5F0E8; }
   select option:checked { background-color: #C9A84C; color: #0D0D0D; }
   select option:disabled { color: #888880; }
+
+  .usage-note { font-size: 0.82rem; color: #E8C97A; border: 1px solid rgba(201,168,76,0.3); background: rgba(201,168,76,0.07); padding: 8px 12px; margin: 0 0 14px; border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -271,12 +273,12 @@ const CrypodeLicense = (() => {
   let S = { key: null, valid: false, info: null, cfg: null, justBought: false, sdk: null };
 
   const T = {
-    en: { title: 'Unlock this premium tool', body: 'One-time payment, unlimited use. Pay securely with PayPal or card and the tool unlocks instantly.', once: 'one-time', have: 'Already purchased?', ph: 'CRY-XXX-XXXX-XXXX-XXXX', unlock: 'Unlock', checking: 'Checking…', processing: 'Confirming your payment…', ok: '✓ Unlocked', change: 'Use a different key',
+    en: { title: 'Unlock this premium tool', body: 'One-time payment, with up to 30 AI generations every month. Pay securely with PayPal or card and the tool unlocks instantly.', once: 'one-time', have: 'Already purchased?', ph: 'CRY-XXX-XXXX-XXXX-XXXX', unlock: 'Unlock', checking: 'Checking…', processing: 'Confirming your payment…', ok: '✓ Unlocked', change: 'Use a different key',
       thanks: 'Payment successful, thank you!', save: 'This is your licence key. Copy it and keep it somewhere safe; you\'ll need it to unlock the tool on another device or browser.', copy: 'Copy', copied: 'Copied ✓', cont: 'Start using the tool',
       ppfail: 'PayPal couldn\'t load. Please refresh the page or turn off any ad-blocker.', payfail: 'The payment didn\'t go through. You have not been charged; please try again.', capfail: 'We couldn\'t confirm your payment. If you were charged, email crypode4life@gmail.com with your PayPal receipt and we\'ll send your key.',
       bad: { invalid: 'That key wasn\'t recognised. Check it was copied exactly.', disabled: 'This licence has been disabled. Contact crypode4life@gmail.com.', wrong_product: 'This key is for a different Crypode tool.', server_unreachable: 'Couldn\'t reach the licence server. Try again in a moment.', missing: 'Please paste your licence key.' },
       needed: 'Please unlock the tool first.' },
-    ar: { title: 'افتح هذه الأداة المميزة', body: 'دفعة واحدة واستخدام غير محدود. ادفع بأمان عبر PayPal أو البطاقة وتُفتح الأداة فورًا.', once: 'مرة واحدة', have: 'اشتريت مسبقًا؟', ph: 'CRY-XXX-XXXX-XXXX-XXXX', unlock: 'فتح', checking: 'جارٍ التحقق…', processing: 'جارٍ تأكيد الدفع…', ok: '✓ مفعّل', change: 'استخدم مفتاحًا آخر',
+    ar: { title: 'افتح هذه الأداة المميزة', body: 'دفعة واحدة، مع ما يصل إلى 30 استخدامًا للذكاء الاصطناعي كل شهر. ادفع بأمان عبر PayPal أو البطاقة وتُفتح الأداة فورًا.', once: 'مرة واحدة', have: 'اشتريت مسبقًا؟', ph: 'CRY-XXX-XXXX-XXXX-XXXX', unlock: 'فتح', checking: 'جارٍ التحقق…', processing: 'جارٍ تأكيد الدفع…', ok: '✓ مفعّل', change: 'استخدم مفتاحًا آخر',
       thanks: 'تم الدفع بنجاح، شكرًا لك!', save: 'هذا مفتاح الترخيص الخاص بك. انسخه واحفظه في مكان آمن، ستحتاجه لفتح الأداة على جهاز أو متصفح آخر.', copy: 'نسخ', copied: 'تم النسخ ✓', cont: 'ابدأ باستخدام الأداة',
       ppfail: 'تعذر تحميل PayPal. يرجى تحديث الصفحة أو إيقاف مانع الإعلانات.', payfail: 'لم تتم عملية الدفع ولم يتم خصم أي مبلغ. يرجى المحاولة مرة أخرى.', capfail: 'تعذر تأكيد الدفع. إذا تم الخصم، راسلنا على crypode4life@gmail.com مع إيصال PayPal وسنرسل لك المفتاح.',
       bad: { invalid: 'لم يتم التعرف على المفتاح. تأكد من نسخه بدقة.', disabled: 'تم تعطيل هذا الترخيص. تواصل مع crypode4life@gmail.com.', wrong_product: 'هذا المفتاح خاص بأداة أخرى من Crypode.', server_unreachable: 'تعذر الوصول إلى خادم التراخيص. حاول مرة أخرى.', missing: 'يرجى لصق مفتاح الترخيص.' },
@@ -503,9 +505,11 @@ const CrypodeLicense = (() => {
       const response = await fetch('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt, license: CrypodeLicense.key }) });
       const result = await response.json();
       if (CrypodeLicense.handleRejected(response.status, result)) return;
+      { const m = CrypodeUsage.refused(result); if (m) { showError(m); return; } }
+      CrypodeUsage.remember(result);
       const textContent = result.content.find(block => block.type === 'text');
       if (!textContent) throw new Error('No response');
-      displayResume(textContent.text);
+      displayResume(textContent.text); CrypodeUsage.note();
     } catch (e) {
       showError('Failed to generate resume');
     }
@@ -531,9 +535,11 @@ const CrypodeLicense = (() => {
       const response = await fetch('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt, license: CrypodeLicense.key }) });
       const result = await response.json();
       if (CrypodeLicense.handleRejected(response.status, result)) return;
+      { const m = CrypodeUsage.refused(result); if (m) { showError(m); return; } }
+      CrypodeUsage.remember(result);
       const textContent = result.content.find(block => block.type === 'text');
       if (!textContent) throw new Error('No response');
-      displayCoverLetter(textContent.text);
+      displayCoverLetter(textContent.text); CrypodeUsage.note();
     } catch (e) {
       showError('Failed to generate cover letter');
     }
@@ -634,6 +640,39 @@ const CrypodePrint = (() => {
   }
 
   return { print, md, plain, esc, copy, download };
+})();
+</script>
+
+<script>
+/* ── Fair-use allowance messages ── */
+const CrypodeUsage = (() => {
+  const isAr = () => typeof currentLang !== 'undefined' && currentLang === 'ar';
+  const fmt = d => { try { return new Date(d + 'T00:00:00Z').toLocaleDateString(isAr() ? 'ar-OM' : 'en-GB', { day: 'numeric', month: 'long', timeZone: 'UTC' }); } catch (e) { return d; } };
+  let last = null;
+  // Returns a message if the request was refused for fair use, otherwise null
+  function refused(result) {
+    if (!result || result.error !== 'fair_use') return null;
+    const ar = isAr(), email = 'crypode4life@gmail.com';
+    if (result.scope === 'day') return ar
+      ? `وصلت إلى الحد اليومي للاستخدام العادل (${result.limit} مرة في اليوم). يمكنك المتابعة غدًا. للاستفسار: ${email}`
+      : `You've reached today's fair-use limit of ${result.limit} generations. You can continue tomorrow. Questions? ${email}`;
+    return ar
+      ? `وصلت إلى حد الاستخدام العادل لهذا الشهر (${result.limit} مرة). يتجدد في ${fmt(result.resets)}. تحتاج المزيد؟ راسلنا على ${email}`
+      : `You've reached this month's fair-use limit of ${result.limit} generations. It resets on ${fmt(result.resets)}. Need more? Email ${email}`;
+  }
+  function remember(result) { last = result && result.crypode_usage ? result.crypode_usage : null; }
+  // Small heads-up at the top of the results once 5 or fewer remain
+  function note() {
+    if (!last) return;
+    const left = last.limit - last.used; if (left > 5) return;
+    const box = document.getElementById('resultsContainer'); if (!box) return;
+    const ar = isAr();
+    const text = left <= 0
+      ? (ar ? `هذا آخر استخدام متاح هذا الشهر. يتجدد في ${fmt(last.resets)}.` : `That was your last generation this month. Your allowance resets on ${fmt(last.resets)}.`)
+      : (ar ? `متبقٍ ${left} من ${last.limit} هذا الشهر.` : `${left} of ${last.limit} generations left this month.`);
+    box.insertAdjacentHTML('afterbegin', `<p class="usage-note">${text}</p>`);
+  }
+  return { refused, remember, note };
 })();
 </script>
 </body>

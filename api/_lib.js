@@ -80,7 +80,7 @@ async function checkLicense(key) {
   if (lic.revoked) return { valid: false, reason: 'disabled' };
   const { accepted } = cfg();
   if (accepted.length && !accepted.includes(lic.product)) return { valid: false, reason: 'wrong_product' };
-  return { valid: true, product: lic.product, email: lic.email || '' };
+  return { valid: true, product: lic.product, email: lic.email || '', created: lic.created || null, key };
 }
 
 function maskEmail(e) {
@@ -89,4 +89,42 @@ function maskEmail(e) {
   return u.slice(0, 2) + '***@' + d;
 }
 
-module.exports = { cfg, redis, paypal, newKey, normKey, checkLicense, maskEmail };
+
+// ── Fair-use allowance for AI generations ──
+// Vercel env vars (optional): FAIR_USE_MONTHLY (default 30), FAIR_USE_DAILY (default 15),
+// FAIR_USE_FROM (ISO date, default 2026-09-27): licences bought before this date keep unlimited use.
+function quotaConfig() {
+  return {
+    monthly: parseInt(process.env.FAIR_USE_MONTHLY || '30', 10),
+    daily: parseInt(process.env.FAIR_USE_DAILY || '15', 10),
+    from: process.env.FAIR_USE_FROM || '2026-09-27'
+  };
+}
+function periodKeys(key, now = new Date()) {
+  const ym = now.toISOString().slice(0, 7), ymd = now.toISOString().slice(0, 10);
+  const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1)).toISOString().slice(0, 10);
+  return { month: `usage:m:${key}:${ym}`, day: `usage:d:${key}:${ymd}`, resets: next };
+}
+// Reserve one generation. Returns { ok, exempt?, used, limit, scope?, resets }
+async function consumeQuota(lic) {
+  const q = quotaConfig();
+  if (lic.created && lic.created.slice(0, 10) < q.from) return { ok: true, exempt: true };
+  const k = periodKeys(lic.key);
+  const month = await redis('INCR', k.month); if (month === 1) await redis('EXPIRE', k.month, 60 * 60 * 24 * 40);
+  const day = await redis('INCR', k.day);     if (day === 1) await redis('EXPIRE', k.day, 60 * 60 * 48);
+  if (month > q.monthly || day > q.daily) {
+    await redis('DECR', k.month); await redis('DECR', k.day);
+    return month > q.monthly
+      ? { ok: false, scope: 'month', used: q.monthly, limit: q.monthly, resets: k.resets }
+      : { ok: false, scope: 'day', used: q.daily, limit: q.daily, resets: 'tomorrow' };
+  }
+  return { ok: true, used: month, limit: q.monthly, resets: k.resets };
+}
+// Give a generation back (the AI call failed)
+async function refundQuota(lic, quota) {
+  if (!quota || quota.exempt || !quota.ok) return;
+  const k = periodKeys(lic.key);
+  try { await redis('DECR', k.month); await redis('DECR', k.day); } catch (e) {}
+}
+
+module.exports = { consumeQuota, refundQuota, quotaConfig, cfg, redis, paypal, newKey, normKey, checkLicense, maskEmail };
