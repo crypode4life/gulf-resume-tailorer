@@ -1,6 +1,6 @@
 // api/generate.js — Claude proxy, only for valid Crypode licence keys
 const { checkLicense, consumeQuota, refundQuota } = require('./_lib.js');
-const MAX_PROMPT_CHARS = 20000;
+const MAX_PROMPT_CHARS = 40000;   // a CV plus a job advert can be long
 // Optional uploaded document (Bank Explainer): PDF or image, sent as base64.
 // Vercel limits request bodies to about 4.5 MB, so files are capped at about 3 MB before encoding.
 const FILE_TYPES = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -9,6 +9,8 @@ const MAX_FILE_B64 = 4300000;
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const { prompt, license, file } = req.body || {};
+  // Longer answers allowed for full CVs (between 500 and 4000 tokens; 2000 if not given)
+  const maxTokens = Math.min(4000, Math.max(500, parseInt((req.body || {}).max_tokens, 10) || 2000));
   if (!prompt) return res.status(400).json({ error: 'Prompt is required' });
   if (prompt.length > MAX_PROMPT_CHARS) return res.status(413).json({ error: 'Input too long' });
   if (file) {
@@ -37,7 +39,7 @@ module.exports = async function handler(req, res) {
       headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
         model: process.env.CLAUDE_MODEL || 'claude-opus-5',
-        max_tokens: 2000,
+        max_tokens: maxTokens,
         messages: [{ role: 'user', content: file
           ? [ file.type === 'application/pdf'
                 ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: file.data } }

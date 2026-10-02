@@ -91,11 +91,12 @@ function maskEmail(e) {
 
 
 // ── Fair-use allowance for AI generations ──
-// Vercel env vars (optional): FAIR_USE_MONTHLY (default 30), FAIR_USE_DAILY (default 15),
+// Vercel env vars (optional): FAIR_USE_MONTHLY (default 30; 60 for the resume product), FAIR_USE_DAILY (default 15),
 // FAIR_USE_FROM (ISO date, default 2026-09-27): licences bought before this date keep unlimited use.
 function quotaConfig() {
   return {
-    monthly: parseInt(process.env.FAIR_USE_MONTHLY || '30', 10),
+    // Resume / Job Application Agent: a full application uses about 4 generations, so it gets 60 by default
+    monthly: parseInt(process.env.FAIR_USE_MONTHLY || ((process.env.PRODUCT_CODE || '').toLowerCase() === 'resume' ? '60' : '30'), 10),
     daily: parseInt(process.env.FAIR_USE_DAILY || '15', 10),
     from: process.env.FAIR_USE_FROM || '2026-09-27'
   };

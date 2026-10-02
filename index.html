@@ -10,9 +10,9 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <!-- SEO -->
-<title>AI Resume &amp; Cover Letter Builder for Gulf Jobs (ATS) | Crypode</title>
-<meta name="description" content="Create an ATS-friendly resume and a tailored cover letter for jobs in Oman, the UAE, Saudi Arabia and the GCC with AI. Copy, download or save as PDF.">
-<meta name="keywords" content="AI resume builder, ATS resume, cover letter generator, resume Oman, CV UAE, resume Saudi Arabia, Gulf jobs resume, GCC CV writer">
+<title>Gulf Job Application Agent: CV Match, Cover Letter | Crypode</title>
+<meta name="description" content="Upload your CV and a job advert: get a match score, missing keywords, a tailored ATS-friendly CV, cover letter, LinkedIn message and interview prep for Gulf jobs.">
+<meta name="keywords" content="job application AI, CV match score, ATS resume checker, tailored CV, cover letter generator, interview preparation, jobs in Oman, jobs in UAE, jobs in Saudi Arabia, GCC jobs CV">
 <meta name="author" content="Crypode">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#0D0D0D">
@@ -20,18 +20,18 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Crypode">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="AI Resume &amp; Cover Letter Tailorer | Crypode">
-<meta property="og:description" content="ATS-friendly resumes and tailored cover letters for Gulf job markets, written by AI from your own details.">
+<meta property="og:title" content="Gulf Job Application Agent | Crypode">
+<meta property="og:description" content="Upload your CV and a job advert. See your match score and missing keywords, then get a tailored CV, cover letter and interview prep.">
 <meta property="og:url" content="https://resume.crypode.com/">
 <meta property="og:image" content="https://resume.crypode.com/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="AI Resume &amp; Cover Letter Tailorer | Crypode">
+<meta property="og:image:alt" content="Gulf Job Application Agent | Crypode">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AI Resume &amp; Cover Letter Tailorer | Crypode">
-<meta name="twitter:description" content="ATS-friendly resumes and tailored cover letters for Gulf job markets, written by AI from your own details.">
+<meta name="twitter:title" content="Gulf Job Application Agent | Crypode">
+<meta name="twitter:description" content="Upload your CV and a job advert. See your match score and missing keywords, then get a tailored CV, cover letter and interview prep.">
 <meta name="twitter:image" content="https://resume.crypode.com/og.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Resume & Cover Letter Tailorer", "description": "Create an ATS-friendly resume and a tailored cover letter for jobs in Oman, the UAE, Saudi Arabia and the GCC with AI. Copy, download or save as PDF.", "url": "https://resume.crypode.com/", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": ["en"], "image": "https://resume.crypode.com/og.png", "offers": {"@type": "Offer", "price": "15", "priceCurrency": "USD", "availability": "https://schema.org/InStock"}, "publisher": {"@type": "Organization", "name": "Crypode", "url": "https://crypode.com/", "logo": "https://crypode.com/og-image.png"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Gulf Job Application Agent", "description": "Upload your CV and a job advert: get a match score, missing keywords, a tailored ATS-friendly CV, cover letter, LinkedIn message and interview prep for Gulf jobs.", "url": "https://resume.crypode.com/", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": ["en"], "image": "https://resume.crypode.com/og.png", "offers": {"@type": "Offer", "price": "15", "priceCurrency": "USD", "availability": "https://schema.org/InStock"}, "publisher": {"@type": "Organization", "name": "Crypode", "url": "https://crypode.com/", "logo": "https://crypode.com/og-image.png"}}</script>
 <!-- /SEO -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -158,6 +158,89 @@
   select option:disabled { color: #888880; }
 
   .usage-note { font-size: 0.82rem; color: #E8C97A; border: 1px solid rgba(201,168,76,0.3); background: rgba(201,168,76,0.07); padding: 8px 12px; margin: 0 0 14px; border-radius: 2px; }
+
+  /* ── Job Application Agent ── */
+  .mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 30px; border: 1px solid rgba(201,168,76,0.3); border-radius: 2px; overflow: hidden; }
+  .mode-btn { background: transparent; border: 0; color: var(--text-muted); padding: 14px 10px; font-family: inherit; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.25s; }
+  .mode-btn.active { background: var(--gold); color: var(--dark); }
+  .mode-btn:not(.active):hover { background: rgba(201,168,76,0.08); color: var(--cream); }
+  .step-head { display: flex; align-items: center; gap: 10px; font-family: 'Playfair Display', serif; color: var(--cream); font-size: 1.15rem; margin: 26px 0 14px; }
+  .step-head:first-of-type { margin-top: 0; }
+  .step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--dark); display: inline-flex; align-items: center; justify-content: center; font-family: 'Tajawal', sans-serif; font-size: 0.8rem; font-weight: 700; }
+  .upload-zone { border: 1.5px dashed rgba(201,168,76,0.4); background: rgba(201,168,76,0.04); padding: 24px 18px; text-align: center; cursor: pointer; transition: all 0.25s; border-radius: 2px; }
+  .upload-zone:hover, .upload-zone.drag { border-color: var(--gold); background: rgba(201,168,76,0.09); }
+  .upload-zone .uz-icon { font-size: 1.7rem; display: block; margin-bottom: 6px; }
+  .upload-zone .uz-main { color: var(--cream); font-size: 0.95rem; }
+  .upload-zone .uz-main b { color: var(--gold); }
+  .upload-zone .uz-sub { color: var(--text-muted); font-size: 0.8rem; margin-top: 5px; }
+  .file-chip { display: none; align-items: center; gap: 12px; border: 1px solid rgba(201,168,76,0.35); background: rgba(201,168,76,0.08); padding: 12px 14px; border-radius: 2px; }
+  .file-chip.show { display: flex; }
+  .file-chip .fc-icon { font-size: 1.4rem; }
+  .file-chip .fc-info { flex: 1; min-width: 0; }
+  .file-chip .fc-name { color: var(--cream); font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .file-chip .fc-meta { color: var(--text-muted); font-size: 0.78rem; margin-top: 2px; }
+  .file-chip .fc-remove { background: none; border: 0; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; padding: 4px 8px; }
+  .file-chip .fc-remove:hover { color: #E07A6A; }
+  .upload-msg { font-size: 0.82rem; margin-top: 8px; min-height: 1em; color: var(--text-muted); }
+  .upload-msg.err { color: #E07A6A; }
+  .paste-cv { margin-top: 6px; }
+  .paste-cv summary { cursor: pointer; color: var(--gold); font-size: 0.85rem; padding: 6px 0; }
+  .paste-cv textarea { margin-top: 8px; min-height: 140px; }
+  textarea.tall { min-height: 170px; }
+  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .form-row-2 { grid-template-columns: 1fr; } }
+  .opt { color: var(--text-muted); font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.78rem; }
+  .hint { display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
+  .cost-note { font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 10px; }
+
+  /* results */
+  .match-head { display: flex; gap: 20px; align-items: center; margin-bottom: 16px; }
+  .score-ring { --p: 0; width: 96px; height: 96px; flex: none; border-radius: 50%; display: grid; place-items: center;
+    background: conic-gradient(var(--ring, var(--gold)) calc(var(--p) * 1%), rgba(255,255,255,0.08) 0); }
+  .score-ring > div { width: 76px; height: 76px; border-radius: 50%; background: var(--dark-3); display: grid; place-items: center; text-align: center; }
+  .score-ring b { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--cream); line-height: 1; }
+  .score-ring small { display: block; font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin-top: 3px; }
+  .match-role { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--cream); line-height: 1.3; }
+  .match-verdict { color: var(--gold); font-size: 0.9rem; margin-top: 4px; }
+  .match-summary { color: var(--cream-soft); font-size: 0.92rem; line-height: 1.65; margin: 0 0 16px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 14px; }
+  .chip { font-size: 0.78rem; padding: 4px 10px; border-radius: 12px; border: 1px solid; }
+  .chip.ok { color: #9ED9B6; border-color: rgba(127,200,160,0.4); background: rgba(127,200,160,0.06); }
+  .mini-head { font-size: 0.7rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin: 16px 0 6px; }
+  .kw-list { list-style: none; margin: 0; padding: 0; }
+  .kw-list li { padding: 9px 0; border-bottom: 1px solid rgba(201,168,76,0.1); font-size: 0.88rem; color: var(--cream-soft); line-height: 1.5; }
+  .kw-list li b { color: var(--cream); }
+  .imp { font-size: 0.62rem; letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; margin-left: 6px; vertical-align: middle; }
+  .imp.high { background: rgba(224,122,106,0.15); color: #F0A090; }
+  .imp.medium { background: rgba(232,201,122,0.15); color: #E8C97A; }
+  .imp.low { background: rgba(255,255,255,0.08); color: var(--text-muted); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 560px) { .two-col { grid-template-columns: 1fr; } }
+  .plain-list { margin: 0; padding-inline-start: 18px; color: var(--cream-soft); font-size: 0.86rem; line-height: 1.6; }
+  .doc-tabs { display: flex; gap: 0; border-bottom: 2px solid rgba(201,168,76,0.2); margin: 6px 0 18px; overflow-x: auto; }
+  .doc-tab { background: none; border: 0; border-bottom: 3px solid transparent; color: var(--text-muted); padding: 10px 14px; font-family: inherit; font-size: 0.78rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; white-space: nowrap; }
+  .doc-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .doc-tab .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #7FC8A0; margin-left: 6px; vertical-align: middle; }
+  .doc-empty { text-align: center; padding: 18px 6px 6px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+  .doc-empty .btn-primary { margin-top: 14px; }
+  .doc-loading { text-align: center; padding: 30px 10px; color: var(--cream-soft); font-size: 0.92rem; }
+  .doc-loading::before { content: ''; display: block; width: 26px; height: 26px; margin: 0 auto 12px; border: 2px solid rgba(201,168,76,0.25); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.9s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .sub-block { border: 1px solid rgba(201,168,76,0.18); padding: 18px; margin-bottom: 16px; border-radius: 2px; }
+  .sub-block h4 { font-family: 'Playfair Display', serif; font-weight: 400; color: var(--gold); margin: 0 0 10px; font-size: 1.05rem; }
+  .agent-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .agent-actions .btn-primary, .agent-actions .btn-ghost-sm { flex: 1 1 120px; margin: 0; }
+  .btn-ghost-sm { background: transparent; color: var(--gold); border: 1px solid rgba(201,168,76,0.5); padding: 11px 14px; font-family: inherit; font-size: 0.75rem; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; cursor: pointer; border-radius: 2px; }
+  .btn-ghost-sm:hover { background: rgba(201,168,76,0.08); }
+  .app-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 22px; padding-top: 16px; border-top: 1px solid rgba(201,168,76,0.12); }
+  .app-bar button { background: none; border: 0; color: var(--text-muted); font-family: inherit; font-size: 0.8rem; cursor: pointer; text-decoration: underline; }
+  .app-bar button:hover { color: var(--gold); }
+  .inline-err { color: #E07A6A; font-size: 0.85rem; margin: 10px 0; }
+  [dir="rtl"] .cp-md ul { padding-inline-start: 22px; }
+  /* keep cards within the screen: wide content (tabs) scrolls instead of stretching the layout */
+  .tool-grid > .tool-card { min-width: 0; }
+  @media (max-width: 560px) { .tool-card { padding: 26px 20px; } .match-head { gap: 14px; flex-direction: column; align-items: flex-start; } .score-ring { width: 84px; height: 84px; } .score-ring > div { width: 66px; height: 66px; } }
+
 </style>
 </head>
 <body>
@@ -175,8 +258,8 @@
   <div class="hero-bg"></div>
   <div class="hero-content">
     <div class="eyebrow">💼 Paid Tool</div>
-    <h1>Resume & Cover <span class="sub">Letter Tailorer</span></h1>
-    <p>AI-powered professional documents optimized for Gulf careers. ATS-friendly, instantly downloadable, customizable.</p>
+    <h1>Job Application <span class="sub">Agent for Gulf Jobs</span></h1>
+    <p>Upload your CV and paste a job advert. See how well you match, which keywords you’re missing, then get a tailored CV, cover letter, recruiter message and interview prep for that exact job.</p>
   </div>
 </section>
 
@@ -186,13 +269,64 @@
     <div id="licenseCard" class="license-card"></div>
     <div class="tool-grid">
       <div class="tool-card">
-        <h2>Create Document</h2>
+        <div class="mode-switch" role="tablist">
+          <button class="mode-btn active" data-mode="agent" onclick="switchMode('agent')">🎯 Apply for a Job</button>
+          <button class="mode-btn" data-mode="scratch" onclick="switchMode('scratch')">✏️ Build from Scratch</button>
+        </div>
 
+        <!-- ═════ APPLY FOR A JOB ═════ -->
+        <div id="agentMode">
+          <div class="step-head"><span class="step-num">1</span> Your CV</div>
+          <input type="file" id="cvFile" accept=".pdf,.docx,.txt,.jpg,.jpeg,.png,.webp,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*" hidden>
+          <div class="upload-zone" id="cvZone" role="button" tabindex="0">
+            <span class="uz-icon">📄</span>
+            <div class="uz-main"><b>Upload your CV</b> or drag it here</div>
+            <div class="uz-sub">PDF, Word (.docx), photo or text · up to 3 MB</div>
+          </div>
+          <div class="file-chip" id="cvChip">
+            <span class="fc-icon" id="cvChipIcon">📄</span>
+            <div class="fc-info"><div class="fc-name" id="cvChipName"></div><div class="fc-meta" id="cvChipMeta"></div></div>
+            <button type="button" class="fc-remove" onclick="JobAgent.clearCv()" aria-label="Remove CV">✕</button>
+          </div>
+          <div class="upload-msg" id="cvMsg"></div>
+          <details class="paste-cv" id="pasteCvBox">
+            <summary>Or paste your CV text instead</summary>
+            <textarea id="cvText" placeholder="Paste the full text of your CV..."></textarea>
+          </details>
+
+          <div class="step-head"><span class="step-num">2</span> The job</div>
+          <div class="form-group">
+            <label for="jobAd">Job advert</label>
+            <textarea id="jobAd" class="tall" placeholder="Paste the full job advert: title, responsibilities, requirements..."></textarea>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="jobCountry">Country</label>
+              <select id="jobCountry">
+                <option>Oman</option><option>United Arab Emirates</option><option>Saudi Arabia</option>
+                <option>Qatar</option><option>Kuwait</option><option>Bahrain</option><option>Other / International</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="docLang">Write documents in</label>
+              <select id="docLang"><option value="English">English</option><option value="Arabic">العربية (Arabic)</option></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="extraNotes">Anything to add? <span class="opt">optional</span></label>
+            <textarea id="extraNotes" placeholder="Achievements or facts not in your CV, e.g. 'Led a team of 12 engineers', 'Cut costs by 18% in 2024'..."></textarea>
+            <span class="hint">The AI only uses facts from your CV and these notes. It never invents experience.</span>
+          </div>
+          <button class="btn-primary" id="analyseBtn" onclick="JobAgent.analyse()">🎯 Analyse My Match</button>
+          <p class="cost-note">Analysis uses 1 of your monthly generations; each document uses 1 more.</p>
+        </div>
+
+        <!-- ═════ BUILD FROM SCRATCH ═════ -->
+        <div id="scratchMode" style="display:none">
         <div class="tab-buttons">
           <button class="tab-button active" onclick="switchTab('resume')">Resume</button>
           <button class="tab-button" onclick="switchTab('cover')">Cover Letter</button>
         </div>
-
         <div id="resumeForm">
           <div class="form-group">
             <label>Full Name</label>
@@ -248,12 +382,13 @@
           </div>
           <button class="btn-primary" onclick="generateCoverLetter()">✍️ Generate Cover Letter</button>
         </div>
+        </div>
       </div>
 
       <div class="tool-card">
-        <h2>Your Document</h2>
+        <h2 id="rightTitle">Your Application</h2>
         <div id="resultsContainer">
-          <p class="placeholder">Fill your details and generate document</p>
+          <p class="placeholder">Upload your CV and paste a job advert to see your match</p>
         </div>
       </div>
     </div>
@@ -273,7 +408,7 @@ const CrypodeLicense = (() => {
   let S = { key: null, valid: false, info: null, cfg: null, justBought: false, sdk: null };
 
   const T = {
-    en: { title: 'Unlock this premium tool', body: 'One-time payment, with up to 30 AI generations every month. Pay securely with PayPal or card and the tool unlocks instantly.', once: 'one-time', have: 'Already purchased?', ph: 'CRY-XXX-XXXX-XXXX-XXXX', unlock: 'Unlock', checking: 'Checking…', processing: 'Confirming your payment…', ok: '✓ Unlocked', change: 'Use a different key',
+    en: { title: 'Unlock this premium tool', body: 'One-time payment, with up to 60 AI generations every month (about 15 full job applications). Pay securely with PayPal or card and the tool unlocks instantly.', once: 'one-time', have: 'Already purchased?', ph: 'CRY-XXX-XXXX-XXXX-XXXX', unlock: 'Unlock', checking: 'Checking…', processing: 'Confirming your payment…', ok: '✓ Unlocked', change: 'Use a different key',
       thanks: 'Payment successful, thank you!', save: 'This is your licence key. Copy it and keep it somewhere safe; you\'ll need it to unlock the tool on another device or browser.', copy: 'Copy', copied: 'Copied ✓', cont: 'Start using the tool',
       ppfail: 'PayPal couldn\'t load. Please refresh the page or turn off any ad-blocker.', payfail: 'The payment didn\'t go through. You have not been charged; please try again.', capfail: 'We couldn\'t confirm your payment. If you were charged, email crypode4life@gmail.com with your PayPal receipt and we\'ll send your key.',
       bad: { invalid: 'That key wasn\'t recognised. Check it was copied exactly.', disabled: 'This licence has been disabled. Contact crypode4life@gmail.com.', wrong_product: 'This key is for a different Crypode tool.', server_unreachable: 'Couldn\'t reach the licence server. Try again in a moment.', missing: 'Please paste your licence key.' },
@@ -472,7 +607,7 @@ const CrypodeLicense = (() => {
 </script>
 <script>
   function switchTab(tab) {
-    document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#scratchMode .tab-button').forEach(b => b.classList.remove('active'));
     if (tab === 'resume') {
       document.getElementById('resumeForm').style.display = 'block';
       document.getElementById('coverForm').style.display = 'none';
@@ -480,7 +615,7 @@ const CrypodeLicense = (() => {
       document.getElementById('resumeForm').style.display = 'none';
       document.getElementById('coverForm').style.display = 'block';
     }
-    document.querySelectorAll('.tab-button')[tab === 'resume' ? 0 : 1].classList.add('active');
+    document.querySelectorAll('#scratchMode .tab-button')[tab === 'resume' ? 0 : 1].classList.add('active');
   }
 
   async function generateResume() {
@@ -501,7 +636,7 @@ const CrypodeLicense = (() => {
     document.getElementById('resultsContainer').innerHTML = '<p class="placeholder">Generating...</p>';
 
     try {
-      const prompt = `Create professional ATS-optimized resume for:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nTarget: ${targetRole}\n\nSummary: ${summary}\nExperience: ${experience}\nEducation: ${education}\n\nFormat for Gulf professionals, ATS-friendly, no markdown.`;
+      const prompt = `Create professional ATS-optimized resume for:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nTarget: ${targetRole}\n\nSummary: ${summary}\nExperience: ${experience}\nEducation: ${education}\n\nFormat for Gulf professionals, ATS-friendly. Use '# ' for the name, '## ' for section headings and '- ' for bullet points. Never output placeholders such as [Company Name], [X], [Date] or 'Insert...'; if a detail is missing, leave it out or write around it. Never invent employers, dates, qualifications, numbers or achievements. Output only the resume.`;
       const response = await fetch('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt, license: CrypodeLicense.key }) });
       const result = await response.json();
       if (CrypodeLicense.handleRejected(response.status, result)) return;
@@ -531,7 +666,7 @@ const CrypodeLicense = (() => {
     document.getElementById('resultsContainer').innerHTML = '<p class="placeholder">Generating...</p>';
 
     try {
-      const prompt = `Write professional cover letter for:\nName: ${name}\nCompany: ${company}\n\nJob: ${jobDesc}\n\nBackground: ${background}\n\nWrite 3-4 paragraphs, Gulf professional tone, no markdown.`;
+      const prompt = `Write professional cover letter for:\nName: ${name}\nCompany: ${company}\n\nJob: ${jobDesc}\n\nBackground: ${background}\n\nWrite 3-4 paragraphs, Gulf professional tone, no markdown. Never output placeholders such as [Company Name], [X], [Date] or 'Insert...'; if a detail is missing, leave it out or write around it. Never invent employers, dates, qualifications, numbers or achievements. Output only the letter.`;
       const response = await fetch('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt, license: CrypodeLicense.key }) });
       const result = await response.json();
       if (CrypodeLicense.handleRejected(response.status, result)) return;
@@ -674,6 +809,346 @@ const CrypodeUsage = (() => {
   }
   return { refused, remember, note };
 })();
+</script>
+<script>
+/* ══════════ Gulf Job Application Agent ══════════ */
+const JobAgent = (() => {
+  const MAX_UPLOAD = 3 * 1024 * 1024, STORE = 'crypode_jobapp_v1';
+  const MAMMOTH = 'https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js';
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const kb = n => n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+  const readAs = (file, how) => new Promise((ok, bad) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = bad; r[how](file); });
+
+  // cv: { name, kind:'pdf'|'image'|'text', type, data, size }  (data only for pdf/image)
+  let S = { cv: null, analysis: null, cvText: '', inputs: null, docs: {}, tab: 'cv', busy: {}, err: '' };
+
+  /* ── saving & restoring the last application (file data is not stored) ── */
+  function save() {
+    try {
+      const keep = { analysis: S.analysis, cvText: S.cvText, inputs: S.inputs, docs: S.docs, tab: S.tab,
+                     cvMeta: S.cv ? { name: S.cv.name, kind: S.cv.kind, size: S.cv.size } : null };
+      localStorage.setItem(STORE, JSON.stringify(keep));
+    } catch (e) {}
+  }
+  function restore() {
+    try {
+      const k = JSON.parse(localStorage.getItem(STORE) || 'null'); if (!k) return;
+      S.analysis = k.analysis; S.cvText = k.cvText || ''; S.inputs = k.inputs; S.docs = k.docs || {}; S.tab = k.tab || 'cv';
+      if (S.inputs) { $('jobAd').value = S.inputs.jobAd || ''; $('jobCountry').value = S.inputs.country || 'Oman'; $('docLang').value = S.inputs.lang || 'English'; $('extraNotes').value = S.inputs.notes || ''; }
+      if (k.cvMeta) { S.cv = { ...k.cvMeta, restored: true }; showChip(S.cv); }
+      if (S.cvText && (!k.cvMeta || k.cvMeta.kind === 'text')) { $('cvText').value = S.cvText; }
+    } catch (e) {}
+  }
+
+  /* ── CV input ── */
+  function msg(t, err) { const m = $('cvMsg'); m.textContent = t || ''; m.className = 'upload-msg' + (err ? ' err' : ''); }
+  function showChip(c) {
+    const icon = { pdf: '📄', image: '🖼️', text: '📝' }[c.kind] || '📄';
+    const label = { pdf: 'PDF', image: 'Photo', text: 'Text extracted' }[c.kind] || '';
+    $('cvChipIcon').textContent = icon; $('cvChipName').textContent = c.name;
+    $('cvChipMeta').textContent = `${label} · ${kb(c.size || 0)}${c.restored ? ' · from your last session' : ''}`;
+    $('cvChip').classList.add('show'); $('cvZone').style.display = 'none';
+  }
+  function clearCv() {
+    S.cv = null; $('cvFile').value = ''; $('cvChip').classList.remove('show'); $('cvZone').style.display = ''; msg('');
+  }
+  function loadMammoth() {
+    if (window.mammoth) return Promise.resolve(window.mammoth);
+    return new Promise((ok, bad) => { const sc = document.createElement('script'); sc.src = MAMMOTH; sc.onload = () => window.mammoth ? ok(window.mammoth) : bad(); sc.onerror = bad; document.head.appendChild(sc); });
+  }
+  async function shrinkImage(file) {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = url; });
+      let max = 2200, q = 0.85;
+      for (let n = 0; n < 6; n++) {
+        const k = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement('canvas');
+        c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+        const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+        const data = c.toDataURL('image/jpeg', q).split(',')[1];
+        if (data.length * 0.75 <= MAX_UPLOAD) return { data, size: Math.round(data.length * 0.75) };
+        max *= 0.8; q = Math.max(0.6, q - 0.07);
+      }
+      return null;
+    } finally { URL.revokeObjectURL(url); }
+  }
+  async function handleCv(file) {
+    if (!file) return; msg('');
+    const name = file.name || 'cv', ext = name.split('.').pop().toLowerCase();
+    try {
+      if (ext === 'pdf' || file.type === 'application/pdf') {
+        if (file.size > MAX_UPLOAD) return msg('That PDF is over 3 MB. Try saving it again with smaller images, or paste the text instead.', true);
+        const data = (await readAs(file, 'readAsDataURL')).split(',')[1];
+        S.cv = { name, kind: 'pdf', type: 'application/pdf', data, size: file.size }; S.cvText = ''; $('cvText').value = '';
+        return showChip(S.cv);
+      }
+      if (ext === 'docx') {
+        msg('Reading your Word document…');
+        let m; try { m = await loadMammoth(); } catch (e) { return msg("Couldn't open Word files right now. Please save your CV as PDF, or paste the text instead.", true); }
+        const r = await m.extractRawText({ arrayBuffer: await readAs(file, 'readAsArrayBuffer') });
+        const text = (r.value || '').trim();
+        if (text.length < 80) return msg("That Word file seems to be mostly empty or images. Please save it as PDF instead.", true);
+        S.cv = { name, kind: 'text', size: file.size }; S.cvText = text; $('cvText').value = text;
+        msg('Text extracted. You can check it under "Or paste your CV text instead".');
+        return showChip(S.cv);
+      }
+      if (ext === 'doc') return msg('Older .doc files can\u2019t be read here. Please save your CV as .docx or PDF.', true);
+      if (/^image\//.test(file.type) || ['jpg', 'jpeg', 'png', 'webp'].includes(ext)) {
+        const r = await shrinkImage(file); if (!r) return msg('That photo is too large. Please try a smaller one.', true);
+        S.cv = { name, kind: 'image', type: 'image/jpeg', data: r.data, size: r.size }; S.cvText = ''; $('cvText').value = '';
+        return showChip(S.cv);
+      }
+      if (ext === 'txt' || /^text\//.test(file.type)) {
+        const text = (await readAs(file, 'readAsText')).trim();
+        S.cv = { name, kind: 'text', size: file.size }; S.cvText = text; $('cvText').value = text;
+        return showChip(S.cv);
+      }
+      msg('Please upload a PDF, Word (.docx), photo or text file.', true);
+    } catch (e) { msg("Couldn't read that file. Please try again.", true); }
+  }
+
+  /* ── talking to the AI ── */
+  const RULES = (lang, country) => `RULES (follow strictly):
+- Use ONLY facts found in the candidate's CV and notes. Never invent employers, job titles, dates, qualifications, certifications, numbers, tools or achievements.
+- Never output placeholders such as [Company Name], [X], [Date], [Your Name] or "Insert...". If a detail is missing, leave it out or write around it.
+- Never claim a skill or experience the CV doesn't show. Where the job asks for something the candidate lacks, leave it out of the documents.
+- Write for the ${country} job market, in a professional Gulf business tone. Write in ${lang}${lang === 'English' ? ' with British spelling' : ''}.
+- Output only what is asked for: no introduction, no commentary, no closing remarks.`;
+
+  async function ask(prompt, { file, maxTokens } = {}) {
+    const response = await fetch('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, license: CrypodeLicense.key, max_tokens: maxTokens, file: file ? { type: file.type, data: file.data } : undefined }) });
+    if (response.status === 413) throw { user: 'Your CV and the job advert together are too long. Please shorten the advert to the main requirements.' };
+    let result; try { result = await response.json(); } catch (e) { throw { user: 'The request took too long. Please try again.' }; }
+    if (CrypodeLicense.handleRejected(response.status, result)) throw { user: 'Please unlock the tool with your licence key first.' };
+    const fu = CrypodeUsage.refused(result); if (fu) throw { user: fu };
+    CrypodeUsage.remember(result);
+    const t = (result.content || []).find(b => b.type === 'text');
+    if (!t) throw { user: 'The AI didn\u2019t return an answer. Please try again.' };
+    return t.text.trim();
+  }
+  function parseJson(t) {
+    t = t.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
+    const a = t.indexOf('{'), b = t.lastIndexOf('}'); return JSON.parse(t.slice(a, b + 1));
+  }
+  const cvBlock = () => S.cvText ? `CANDIDATE'S CV:\n"""\n${S.cvText}\n"""` : `CANDIDATE'S CV: see the attached document.`;
+  const jobBlock = () => `JOB ADVERT:\n"""\n${S.inputs.jobAd}\n"""`;
+  const notesBlock = () => S.inputs.notes ? `\nEXTRA FACTS FROM THE CANDIDATE (true, may be used):\n"""\n${S.inputs.notes}\n"""` : '';
+  const fileForDocs = () => (!S.cvText && S.cv && S.cv.data) ? S.cv : null;
+
+  /* ── step 1: analyse ── */
+  async function analyse() {
+    if (!CrypodeLicense.requireUnlocked()) return;
+    const pasted = $('cvText').value.trim();
+    if (!S.cv && pasted) { S.cvText = pasted; }
+    if (S.cv && S.cv.kind === 'text') S.cvText = pasted || S.cvText;
+    const jobAd = $('jobAd').value.trim();
+    if (!S.cv && !S.cvText) return fail('Please upload your CV or paste its text.');
+    if (S.cv && S.cv.restored && !S.cv.data && !S.cvText) return fail('Please upload your CV again (files aren\u2019t kept between visits).');
+    if (S.cvText && S.cvText.length < 150) return fail('Your CV text looks too short. Please paste the full CV.');
+    if (jobAd.length < 120) return fail('Please paste the full job advert, including the requirements.');
+    S.inputs = { jobAd, country: $('jobCountry').value, lang: $('docLang').value, notes: $('extraNotes').value.trim() };
+    S.analysis = null; S.docs = {}; S.err = ''; S.busy = { analyse: true }; render();
+    const needText = !S.cvText;
+    const prompt = `You are an expert Gulf recruiter and ATS specialist. Compare the candidate's CV with the job advert.
+
+${cvBlock()}
+
+${jobBlock()}${notesBlock()}
+
+Return ONLY valid JSON (no code fences, no text before or after) with exactly these keys:
+{
+  "role_title": "job title from the advert",
+  "company": "employer name if stated in the advert, otherwise empty string",
+  "candidate_name": "candidate's full name from the CV, otherwise empty string",
+  "match_score": integer 0-100, calibrated honestly (85+ strong fit; 65-84 good fit with some gaps; 40-64 partial fit; below 40 weak fit),
+  "verdict": "one short sentence",
+  "summary": "2-3 sentences explaining the score",
+  "matched_keywords": ["up to 12 job requirements/keywords the CV clearly shows"],
+  "missing_keywords": [{"keyword": "requirement/keyword from the advert not shown in the CV", "importance": "high|medium|low", "advice": "one practical sentence: how to address it truthfully (e.g. mention related experience if the CV has it, or prepare to discuss it)"}],
+  "strengths": ["3-5 short points"],
+  "gaps": ["up to 4 short points"],
+  "cv_text": ${needText ? '"the complete text of the CV, faithfully transcribed with all details, as plain text with line breaks"' : '""'}
+}
+Use at most 10 missing_keywords, most important first. Never invent facts about the candidate.`;
+    try {
+      const raw = await ask(prompt, { file: needText ? S.cv : null, maxTokens: needText ? 4000 : 2000 });
+      let a; try { a = parseJson(raw); } catch (e) { throw { user: 'The analysis came back in an unexpected format. Please try again.' }; }
+      a.match_score = Math.max(0, Math.min(100, parseInt(a.match_score, 10) || 0));
+      if (needText && a.cv_text && a.cv_text.length > 150) S.cvText = a.cv_text.trim();
+      delete a.cv_text;
+      S.analysis = a; S.tab = 'cv';
+    } catch (e) { S.err = e.user || 'Something went wrong. Please try again.'; }
+    S.busy = {}; save(); render(); CrypodeUsage.note();
+  }
+
+  /* ── step 2: documents ── */
+  const DOCS = {
+    cv: { label: 'Tailored CV', icon: '📄', tokens: 3800, file: 'tailored-cv',
+      blurb: 'Your CV rewritten for this job: reordered, keyword-matched and ATS-friendly, using only your real experience.',
+      prompt: () => `Rewrite the candidate's CV, tailored to this job.
+
+${cvBlock()}
+
+${jobBlock()}${notesBlock()}
+
+Missing keywords identified earlier (include one ONLY where the CV or notes genuinely support it): ${(S.analysis.missing_keywords || []).map(k => k.keyword).join(', ')}
+
+Instructions:
+- Keep every real employer, job title, date, qualification and certification from the CV. Do not drop real roles; you may shorten older ones.
+- Put the most relevant experience and skills first; use the advert's terminology where the CV genuinely supports it.
+- ATS-friendly: standard headings (Professional Summary, Core Skills, Professional Experience, Education, Certifications, Languages; include only sections with content), no tables or columns.
+- Bullets start with strong action verbs and keep any real figures from the CV.
+- Include personal details (nationality, visa status, driving licence, languages) only if they are in the CV.
+- Format: first line "# Full Name", second line the contact details separated by " | ", then "## " section headings and "- " bullets. For each job use a line "**Job Title**, Company — Location (dates)".
+
+${RULES(S.inputs.lang, S.inputs.country)}` },
+    cover: { label: 'Cover Letter & Message', icon: '✍️', tokens: 2000, file: 'cover-letter',
+      blurb: 'A cover letter for this role, plus a short LinkedIn message for the recruiter or hiring manager.',
+      prompt: () => `Write application messages for this candidate and job.
+
+${cvBlock()}
+
+${jobBlock()}${notesBlock()}
+
+Produce exactly two parts, using these marker lines:
+=== COVER LETTER ===
+A cover letter of 250-350 words. Address it to the named contact if the advert gives one, otherwise "Dear Hiring Manager". Name the role${S.analysis.company ? ' and ' + S.analysis.company : ''}. 3-4 paragraphs: why this role, the 2-3 most relevant achievements from the CV, what the candidate brings, and a polite close. Sign off with the candidate's name from the CV.
+=== RECRUITER MESSAGE ===
+First a LinkedIn connection note of at most 280 characters, then a blank line, then a slightly longer LinkedIn message of at most 120 words to the recruiter or hiring manager. No subject lines, no placeholders.
+
+${RULES(S.inputs.lang, S.inputs.country)}` },
+    interview: { label: 'Interview Prep', icon: '🎤', tokens: 3500, file: 'interview-prep',
+      blurb: 'Likely interview questions with answer outlines based on your own experience, questions to ask them, and salary-package talking points.',
+      prompt: () => `Prepare this candidate for an interview for this job.
+
+${cvBlock()}
+
+${jobBlock()}${notesBlock()}
+
+Format in markdown:
+## Likely questions
+8 questions this employer is likely to ask (mix of technical, behavioural and motivation, plus at least one about a gap: ${(S.analysis.gaps || []).slice(0, 2).join('; ') || 'any gap in the CV'}). For each: the question in bold, then "- Why they ask:" one line, then "- How to answer:" 2-3 bullet points pointing to specific experience from the CV (use the STAR approach for behavioural questions).
+## Questions to ask them
+4 smart questions about this role and employer.
+## Salary and package talking points
+5-6 practical points for negotiating in ${S.inputs.country}: discuss the total package (basic salary, housing, transport, schooling, flights, medical), note that end-of-service gratuity is usually calculated on basic salary so the basic matters, ask about probation and notice periods, and avoid naming a number first. Do not invent salary figures; mention a figure only if the advert states one.
+
+${RULES(S.inputs.lang, S.inputs.country)}` }
+  };
+  async function generate(kind) {
+    if (!CrypodeLicense.requireUnlocked() || !S.analysis) return;
+    if (!S.cvText && !(S.cv && S.cv.data)) { S.err = 'Please upload your CV again (files aren\u2019t kept between visits).'; return render(); }
+    S.tab = kind; S.busy[kind] = true; S.err = ''; render();
+    try { S.docs[kind] = await ask(DOCS[kind].prompt(), { file: fileForDocs(), maxTokens: DOCS[kind].tokens }); }
+    catch (e) { S.err = e.user || 'Something went wrong. Please try again.'; }
+    delete S.busy[kind]; save(); render(); CrypodeUsage.note();
+  }
+  async function generateAll() {
+    const todo = Object.keys(DOCS).filter(k => !S.docs[k]);
+    for (const k of todo) { await generate(k); if (S.err) break; }
+    S.tab = todo[0] || S.tab; render();
+  }
+
+  /* ── output helpers ── */
+  const isAr = () => S.inputs && S.inputs.lang === 'Arabic';
+  function splitCover(t) {
+    const m = t.split(/^\s*===\s*RECRUITER MESSAGE\s*===\s*$/mi);
+    return { letter: (m[0] || '').replace(/^\s*===\s*COVER LETTER\s*===\s*$/mi, '').trim(), message: (m[1] || '').trim() };
+  }
+  function docText(kind, part) {
+    const t = S.docs[kind] || ''; if (kind !== 'cover') return t;
+    const c = splitCover(t); return part === 'message' ? c.message : c.letter;
+  }
+  function copy(kind, part, btn) { CrypodePrint.copy(CrypodePrint.plain(docText(kind, part)), btn); }
+  function word(kind) {
+    const html = CrypodePrint.md(docText(kind)), name = (S.analysis.candidate_name || 'application').replace(/[^\w\u0600-\u06FF -]/g, '').trim().replace(/\s+/g, '-');
+    const doc = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>${esc(DOCS[kind].label)}</title>
+<style>body{font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.35;${isAr() ? 'direction:rtl;' : ''}} h1,h2{font-size:20pt;margin:0 0 4pt;border:0} h3{font-size:12.5pt;border-bottom:1px solid #999;margin:14pt 0 6pt;padding-bottom:2pt} h4{font-size:11.5pt;margin:10pt 0 4pt} p{margin:0 0 6pt} ul{margin:0 0 6pt 18pt}</style></head><body${isAr() ? ' dir="rtl"' : ''}>${html}</body></html>`;
+    const url = URL.createObjectURL(new Blob(['\ufeff', doc], { type: 'application/msword' }));
+    const a = document.createElement('a'); a.href = url; a.download = `${name}-${DOCS[kind].file}.doc`; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  }
+  function print(kind) {
+    const personal = kind === 'interview';
+    CrypodePrint.print({ bodyHtml: CrypodePrint.md(docText(kind)), branded: personal, title: personal ? 'Interview Preparation' : '',
+      lang: isAr() ? 'ar' : 'en', dir: isAr() ? 'rtl' : 'ltr',
+      disclaimer: personal ? 'Prepared with Crypode\u2019s Job Application Agent. Review and adapt the suggested answers in your own words.' : '' });
+  }
+
+  /* ── rendering ── */
+  function fail(t) { S.err = t; render(); }
+  function render() {
+    if (currentMode !== 'agent') return;
+    const box = $('resultsContainer'), a = S.analysis;
+    const err = S.err ? `<p class="inline-err">${esc(S.err)}</p>` : '';
+    if (S.busy.analyse) { box.innerHTML = `<div class="doc-loading">Reading your CV and the job advert… this can take up to a minute.</div>`; return; }
+    if (!a) { box.innerHTML = err + `<p class="placeholder">Upload your CV and paste a job advert, then click <b>Analyse My Match</b>.</p>`; return; }
+    const ring = a.match_score >= 75 ? '#7FC8A0' : a.match_score >= 50 ? 'var(--gold)' : '#E07A6A';
+    const role = [a.role_title, a.company].filter(Boolean).map(esc).join(' · ');
+    let h = `${err}<div class="result-box" style="margin-top:0">
+      <div class="match-head"><div class="score-ring" style="--p:${a.match_score};--ring:${ring}"><div><b>${a.match_score}%</b><small>match</small></div></div>
+        <div><div class="match-role">${role || 'This role'}</div><div class="match-verdict">${esc(a.verdict)}</div></div></div>
+      <p class="match-summary">${esc(a.summary)}</p>
+      ${(a.matched_keywords || []).length ? `<div class="mini-head">✓ You match</div><div class="chips">${a.matched_keywords.map(k => `<span class="chip ok">${esc(k)}</span>`).join('')}</div>` : ''}
+      ${(a.missing_keywords || []).length ? `<div class="mini-head">Missing keywords</div><ul class="kw-list">${a.missing_keywords.map(k => `<li><b>${esc(k.keyword)}</b><span class="imp ${['high','medium','low'].includes(k.importance) ? k.importance : 'low'}">${esc(k.importance || '')}</span><br>${esc(k.advice)}</li>`).join('')}</ul>` : ''}
+      <div class="two-col">
+        <div><div class="mini-head">Strengths</div><ul class="plain-list">${(a.strengths || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+        <div><div class="mini-head">Gaps to prepare for</div><ul class="plain-list">${(a.gaps || []).map(x => `<li>${esc(x)}</li>`).join('') || '<li>None significant</li>'}</ul></div>
+      </div>
+    </div>
+    <h3 style="font-family:'Playfair Display',serif;font-weight:400;color:var(--cream);margin:26px 0 4px">Your application pack</h3>
+    <div class="doc-tabs">${Object.entries(DOCS).map(([k, d]) => `<button class="doc-tab${S.tab === k ? ' active' : ''}" onclick="JobAgent.tab('${k}')">${d.icon} ${d.label}${S.docs[k] ? '<span class="dot"></span>' : ''}</button>`).join('')}</div>`;
+    const k = S.tab, d = DOCS[k], dir = isAr() ? ' dir="rtl"' : '';
+    if (S.busy[k]) h += `<div class="doc-loading">Writing your ${d.label.toLowerCase()}…</div>`;
+    else if (!S.docs[k]) {
+      const remaining = Object.keys(DOCS).filter(x => !S.docs[x]).length;
+      h += `<div class="doc-empty">${esc(d.blurb)}<br><button class="btn-primary" onclick="JobAgent.generate('${k}')">${d.icon} Create ${d.label}</button>
+        ${remaining > 1 ? `<div style="margin-top:10px"><button class="btn-ghost-sm" onclick="JobAgent.generateAll()">Create all ${remaining} (uses ${remaining})</button></div>` : ''}</div>`;
+    } else if (k === 'cover') {
+      const c = splitCover(S.docs.cover);
+      h += `<div class="sub-block"><h4>Cover letter</h4><div class="output-text cp-screen"${dir}>${CrypodePrint.md(c.letter)}</div>
+          <div class="agent-actions"><button class="btn-primary" onclick="JobAgent.copy('cover','letter',this)">📋 Copy</button><button class="btn-ghost-sm" onclick="JobAgent.word('cover')">⬇️ Word</button><button class="btn-ghost-sm" onclick="JobAgent.print('cover')">🖨️ PDF</button></div></div>
+        ${c.message ? `<div class="sub-block"><h4>LinkedIn message</h4><div class="output-text cp-screen"${dir}>${CrypodePrint.md(c.message)}</div>
+          <div class="agent-actions"><button class="btn-primary" onclick="JobAgent.copy('cover','message',this)">📋 Copy message</button></div></div>` : ''}
+        <div class="agent-actions"><button class="btn-ghost-sm" onclick="JobAgent.generate('cover')">↻ Rewrite (uses 1)</button></div>`;
+    } else {
+      h += `<div class="output-text cp-screen"${dir}>${CrypodePrint.md(S.docs[k])}</div>
+        <div class="agent-actions"><button class="btn-primary" onclick="JobAgent.copy('${k}',null,this)">📋 Copy</button><button class="btn-ghost-sm" onclick="JobAgent.word('${k}')">⬇️ Word</button><button class="btn-ghost-sm" onclick="JobAgent.print('${k}')">🖨️ PDF</button><button class="btn-ghost-sm" onclick="JobAgent.generate('${k}')">↻ Rewrite</button></div>`;
+    }
+    h += `<div class="app-bar"><button onclick="JobAgent.newJob()">＋ Same CV, new job</button><button onclick="JobAgent.reset()">Start over</button></div>`;
+    box.innerHTML = h;
+  }
+  function tab(k) { S.tab = k; S.err = ''; save(); render(); }
+  function newJob() { S.analysis = null; S.docs = {}; S.err = ''; $('jobAd').value = ''; $('extraNotes').value = ''; save(); render(); $('jobAd').focus(); }
+  function reset() { if (!confirm('Clear your CV, the job advert and all generated documents?')) return; localStorage.removeItem(STORE); S = { cv: null, analysis: null, cvText: '', inputs: null, docs: {}, tab: 'cv', busy: {}, err: '' }; clearCv(); ['jobAd','extraNotes','cvText'].forEach(i => $(i).value = ''); render(); }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const zone = $('cvZone'), input = $('cvFile');
+    zone.addEventListener('click', () => input.click());
+    zone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } });
+    input.addEventListener('change', () => handleCv(input.files[0]));
+    ['dragenter', 'dragover'].forEach(ev => zone.addEventListener(ev, e => { e.preventDefault(); zone.classList.add('drag'); }));
+    ['dragleave', 'drop'].forEach(ev => zone.addEventListener(ev, e => { e.preventDefault(); zone.classList.remove('drag'); }));
+    zone.addEventListener('drop', e => handleCv(e.dataTransfer.files[0]));
+    restore(); render();
+  });
+  return { analyse, generate, generateAll, tab, copy, word, print, newJob, reset, clearCv, render, _state: () => S };
+})();
+
+/* mode switching: agent vs build-from-scratch share the right-hand panel */
+let currentMode = 'agent';
+function switchMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  document.getElementById('agentMode').style.display = mode === 'agent' ? '' : 'none';
+  document.getElementById('scratchMode').style.display = mode === 'scratch' ? '' : 'none';
+  document.getElementById('rightTitle').textContent = mode === 'agent' ? 'Your Application' : 'Your Document';
+  if (mode === 'agent') JobAgent.render();
+  else document.getElementById('resultsContainer').innerHTML = '<p class="placeholder">Fill in your details and generate your document</p>';
+}
+
 </script>
 </body>
 </html>
