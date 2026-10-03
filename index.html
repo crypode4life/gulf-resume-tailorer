@@ -1339,7 +1339,7 @@ Return ONLY valid JSON (no code fences, no text before or after):
 }
 RULES (follow strictly):
 - Every amount and term must come from the document. If something isn't stated, use null or leave it out. Never guess or estimate amounts.
-- "package" lists monthly cash items only. Convert an annual or weekly amount to monthly only if the document states it clearly, and say so in the note. Set is_basic true only for the basic salary.
+- "package" lists monthly cash items only. Never include total or subtotal lines (such as "Total gross salary") as items. Convert an annual or weekly amount to monthly only if the document states it clearly, and say so in the note. Set is_basic true only for the basic salary.
 - Look for: contract type and duration, start date, job title, place of work, working hours and days, overtime, probation, notice period, annual leave, public holidays, sick leave, medical insurance, end-of-service benefits, bonus or commission, housing, transport, flights, schooling, relocation, repayment of training or relocation costs, non-compete, confidentiality, deductions or penalties, termination, governing law.
 - Watch points: flag clauses that are unusual, one-sided, vague or costly for the employee (for example cost-repayment clauses, broad non-competes, purely discretionary bonuses, unpaid overtime, a low basic salary within the package, unclear end-of-service terms). Use "info" for neutral but important points. Order by importance.
 - Keep the whole answer compact: summary at most 3 sentences; at most 12 key_terms; at most 8 watch_points, each explanation at most 2 sentences; quotes at most 15 words; at most 8 not_mentioned items; 4-6 questions_to_ask; answers_to_concerns at most 120 words. Prioritise what matters most to the employee.
@@ -1359,8 +1359,20 @@ RULES (follow strictly):
   function body(forPrint) {
     const r = S.result, c = (r.currency || '').toUpperCase(), C = S.inputs.country, ar = S.inputs.lang === 'Arabic';
     const dir = ar ? ' dir="rtl"' : '';
-    const pkg = (r.package || []).filter(p => p && p.item);
-    const nums = pkg.filter(p => typeof p.monthly === 'number' && !isNaN(p.monthly));
+    let pkg = (r.package || []).filter(p => p && p.item);
+    // A "total" line copied from the letter must not be added to the items it already sums up
+    const isNum = p => typeof p.monthly === 'number' && !isNaN(p.monthly);
+    let stated = null;
+    pkg = pkg.filter(p => {
+      if (!p.is_basic && /\b(total|sub-?total|gross (monthly )?(salary|pay|package))\b/i.test(p.item)) { if (isNum(p)) stated = p.monthly; return false; }
+      return true;
+    });
+    const sumAll = pkg.filter(isNum).reduce((s, p) => s + p.monthly, 0);
+    pkg = pkg.filter(p => {
+      if (!p.is_basic && isNum(p) && pkg.filter(isNum).length > 2 && Math.abs(p.monthly - (sumAll - p.monthly)) < 0.005 * Math.max(1, p.monthly)) { stated = p.monthly; return false; }
+      return true;
+    });
+    const nums = pkg.filter(isNum);
     const total = nums.reduce((s, p) => s + p.monthly, 0);
     const basic = nums.filter(p => p.is_basic).reduce((s, p) => s + p.monthly, 0);
     const share = total > 0 && basic > 0 ? Math.round(basic / total * 100) : null;
@@ -1372,7 +1384,7 @@ RULES (follow strictly):
       <p class="match-summary" style="margin-top:8px">${esc(r.summary)}</p></div>`;
     if (pkg.length) {
       h += `<div class="result-box"${dir}><h3>Monthly package</h3><table class="pkg-table">${pkg.map(p => `<tr><td>${esc(p.item)}${p.note ? `<small>${esc(p.note)}</small>` : ''}</td><td class="amt">${money(p.monthly, c)}</td></tr>`).join('')}
-        ${nums.length > 1 ? `<tr class="total"><td>Total monthly (stated items)</td><td class="amt">${money(total, c)}</td></tr>` : ''}</table>
+        ${nums.length > 1 ? `<tr class="total"><td>Total monthly${stated !== null && Math.abs(stated - total) < 0.005 ? '<small>Matches the total stated in the document</small>' : stated !== null ? `<small>The document states ${money(stated, c)}; check the difference with the employer</small>` : ''}</td><td class="amt">${money(total, c)}</td></tr>` : ''}</table>
         ${share !== null ? `<div class="mini-head">Basic salary share</div>${forPrint ? '' : `<div class="basic-bar"><span style="width:${share}%"></span></div>`}
           <p class="basic-note"><b>${share}%</b> of the monthly package is basic salary (${money(basic, c)} of ${money(total, c)}). ${gratLaw}, so it would be based on ${money(basic, c)} a month, not the full package.</p>` : ''}
         ${(r.annual_extras || []).length ? `<div class="mini-head">Annual and other benefits</div><ul class="plain-list">${r.annual_extras.map(x => `<li><b>${esc(x.item)}:</b> ${esc(x.detail)}</li>`).join('')}</ul>` : ''}</div>`;
@@ -1380,7 +1392,7 @@ RULES (follow strictly):
     if ((r.key_terms || []).length) h += `<div class="result-box"${dir}><h3>Key terms</h3><ul class="term-list">${r.key_terms.map(t => `<li><b>${esc(t.term)}</b> ${esc(t.detail)}${t.quote ? `<span class="quote">“${esc(t.quote)}”</span>` : ''}</li>`).join('')}</ul></div>`;
     if ((r.watch_points || []).length) h += `<div class="result-box"${dir}><h3>Points to check</h3>${r.watch_points.map(w => `<div class="watch ${['high','medium','info'].includes(w.level) ? w.level : 'info'}"><h5>${w.level === 'high' ? '⚠️ ' : w.level === 'medium' ? '• ' : 'ℹ️ '}${esc(w.title)}</h5><p>${esc(w.explanation)}</p>${w.ask ? `<div class="ask">Ask: ${esc(w.ask)}</div>` : ''}</div>`).join('')}</div>`;
     if ((r.not_mentioned || []).length) h += `<div class="result-box"${dir}><h3>Not mentioned in the document</h3><div class="chips">${r.not_mentioned.map(x => `<span class="chip miss">${esc(x)}</span>`).join('')}</div></div>`;
-    if (r.answers_to_concerns) h += `<div class="result-box"${dir}><h3>Your questions</h3><div class="output-text cp-screen">${CrypodePrint.md(r.answers_to_concerns)}</div></div>`;
+    if (r.answers_to_concerns && S.inputs.concerns) h += `<div class="result-box"${dir}><h3>Your questions</h3><div class="output-text cp-screen">${CrypodePrint.md(r.answers_to_concerns)}</div></div>`;
     if ((r.questions_to_ask || []).length) h += `<div class="result-box"${dir}><h3>Questions to ask before signing</h3><ol class="plain-list">${r.questions_to_ask.map(q => `<li>${esc(q)}</li>`).join('')}</ol></div>`;
     if (!forPrint && C === 'Oman') h += `<div class="grat-cta"><span>Want to know what this job's end-of-service gratuity could be worth?</span><a href="https://gratuity.crypode.com" target="_blank" rel="noopener">Gratuity Calculator →</a></div>`;
     h += `<p class="legal-note">This is an educational explanation of the document, not legal advice. For anything important, check with the employer, the Ministry of Labour${C !== 'Other / International' ? ' in ' + esc(C) : ''}, or a qualified lawyer before signing.</p>`;
