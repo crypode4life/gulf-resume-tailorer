@@ -11,7 +11,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <!-- SEO -->
 <title>Gulf Job Application Agent: CV Match, Cover Letter | Crypode</title>
-<meta name="description" content="Upload your CV and a job advert: get a match score, missing keywords, a tailored ATS-friendly CV, cover letter, LinkedIn message and interview prep for Gulf jobs.">
+<meta name="description" content="Upload your CV and a job advert for a match score, tailored ATS-friendly CV, cover letter and interview prep. Then review your Gulf job offer before signing.">
 <meta name="keywords" content="job application AI, CV match score, ATS resume checker, tailored CV, cover letter generator, interview preparation, jobs in Oman, jobs in UAE, jobs in Saudi Arabia, GCC jobs CV">
 <meta name="author" content="Crypode">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -31,7 +31,7 @@
 <meta name="twitter:title" content="Gulf Job Application Agent | Crypode">
 <meta name="twitter:description" content="Upload your CV and a job advert. See your match score and missing keywords, then get a tailored CV, cover letter and interview prep.">
 <meta name="twitter:image" content="https://resume.crypode.com/og.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Gulf Job Application Agent", "description": "Upload your CV and a job advert: get a match score, missing keywords, a tailored ATS-friendly CV, cover letter, LinkedIn message and interview prep for Gulf jobs.", "url": "https://resume.crypode.com/", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": ["en"], "image": "https://resume.crypode.com/og.png", "offers": {"@type": "Offer", "price": "15", "priceCurrency": "USD", "availability": "https://schema.org/InStock"}, "publisher": {"@type": "Organization", "name": "Crypode", "url": "https://crypode.com/", "logo": "https://crypode.com/og-image.png"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Gulf Job Application Agent", "description": "Upload your CV and a job advert for a match score, tailored ATS-friendly CV, cover letter and interview prep. Then review your Gulf job offer before signing.", "url": "https://resume.crypode.com/", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": ["en"], "image": "https://resume.crypode.com/og.png", "offers": {"@type": "Offer", "price": "15", "priceCurrency": "USD", "availability": "https://schema.org/InStock"}, "publisher": {"@type": "Organization", "name": "Crypode", "url": "https://crypode.com/", "logo": "https://crypode.com/og-image.png"}}</script>
 <!-- /SEO -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -235,12 +235,48 @@
   .app-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 22px; padding-top: 16px; border-top: 1px solid rgba(201,168,76,0.12); }
   .app-bar button { background: none; border: 0; color: var(--text-muted); font-family: inherit; font-size: 0.8rem; cursor: pointer; text-decoration: underline; }
   .app-bar button:hover { color: var(--gold); }
+  .weak-note { border: 1px solid rgba(224,122,106,0.45); background: rgba(224,122,106,0.08); color: #F0B4A8; font-size: 0.86rem; line-height: 1.55; padding: 12px 14px; border-radius: 2px; margin: 4px 0 6px; }
   .inline-err { color: #E07A6A; font-size: 0.85rem; margin: 10px 0; }
   [dir="rtl"] .cp-md ul { padding-inline-start: 22px; }
   /* keep cards within the screen: wide content (tabs) scrolls instead of stretching the layout */
   .tool-grid > .tool-card { min-width: 0; }
   @media (max-width: 560px) { .tool-card { padding: 26px 20px; } .match-head { gap: 14px; flex-direction: column; align-items: flex-start; } .score-ring { width: 84px; height: 84px; } .score-ring > div { width: 66px; height: 66px; } }
 
+  /* ── Job offer review ── */
+  .mode-switch.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 560px) { .mode-switch.three { grid-template-columns: 1fr; } .mode-switch.three .mode-btn + .mode-btn { border-top: 1px solid rgba(201,168,76,0.2); } }
+  .privacy-note { font-size: 0.78rem; color: var(--text-muted); line-height: 1.55; margin-top: 10px; }
+  .pkg-table { width: 100%; border-collapse: collapse; margin: 6px 0 4px; font-size: 0.9rem; }
+  .pkg-table td { padding: 9px 4px; border-bottom: 1px solid rgba(201,168,76,0.1); color: var(--cream-soft); vertical-align: top; }
+  .pkg-table td.amt { text-align: right; white-space: nowrap; color: var(--cream); font-variant-numeric: tabular-nums; }
+  .pkg-table tr.total td { border-top: 2px solid var(--gold); border-bottom: 0; font-weight: 700; color: var(--gold); }
+  .pkg-table small { display: block; color: var(--text-muted); font-size: 0.76rem; margin-top: 2px; }
+  .basic-bar { height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; margin: 8px 0 6px; }
+  .basic-bar > span { display: block; height: 100%; background: var(--gold); }
+  .basic-note { font-size: 0.84rem; color: var(--cream-soft); line-height: 1.55; }
+  .term-list { list-style: none; margin: 0; padding: 0; }
+  .term-list li { padding: 10px 0; border-bottom: 1px solid rgba(201,168,76,0.1); font-size: 0.9rem; color: var(--cream-soft); line-height: 1.5; }
+  .term-list li b { color: var(--cream); display: inline-block; min-width: 140px; }
+  .term-list .quote { display: block; font-size: 0.78rem; color: var(--text-muted); font-style: italic; margin-top: 3px; }
+  .watch { border-left: 3px solid var(--text-muted); padding: 10px 14px; margin: 10px 0; background: rgba(255,255,255,0.02); }
+  .watch.high { border-left-color: #E07A6A; } .watch.medium { border-left-color: #E8C97A; } .watch.info { border-left-color: #7FC8A0; }
+  .watch h5 { margin: 0 0 4px; font-size: 0.95rem; color: var(--cream); font-weight: 600; }
+  .watch p { margin: 0 0 4px; font-size: 0.86rem; color: var(--cream-soft); line-height: 1.55; }
+  .watch .ask { color: var(--gold); font-size: 0.84rem; }
+  .chip.miss { color: #E8C97A; border-color: rgba(232,201,122,0.4); background: rgba(232,201,122,0.06); }
+  .grat-cta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; border: 1px solid rgba(201,168,76,0.3); background: rgba(201,168,76,0.06); padding: 14px 16px; margin-top: 16px; border-radius: 2px; font-size: 0.88rem; color: var(--cream-soft); }
+  .grat-cta a { color: var(--dark); background: var(--gold); padding: 9px 14px; text-decoration: none; font-weight: 600; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; border-radius: 2px; white-space: nowrap; }
+  .legal-note { font-size: 0.78rem; color: var(--text-muted); line-height: 1.55; margin-top: 14px; }
+  @media print {
+    #cpPrintSheet .pkg-table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+    #cpPrintSheet .pkg-table td { border-bottom: 1px solid #e5e5e5; padding: 4px 6px; }
+    #cpPrintSheet .pkg-table td.amt { text-align: right; }
+    #cpPrintSheet .pkg-table tr.total td { border-top: 2px solid #A07830; font-weight: 700; }
+    #cpPrintSheet .watch { border-left: 3px solid #999; padding: 4px 10px; margin: 6px 0; page-break-inside: avoid; }
+    #cpPrintSheet .watch.high { border-left-color: #C0504D !important; } #cpPrintSheet .watch.medium { border-left-color: #C9A84C !important; }
+    #cpPrintSheet .basic-bar, #cpPrintSheet .grat-cta, #cpPrintSheet .result-actions { display: none !important; }
+    #cpPrintSheet .term-list li { border-bottom: 1px solid #eee; padding: 4px 0; }
+  }
 </style>
 </head>
 <body>
@@ -259,7 +295,7 @@
   <div class="hero-content">
     <div class="eyebrow">💼 Paid Tool</div>
     <h1>Job Application <span class="sub">Agent for Gulf Jobs</span></h1>
-    <p>Upload your CV and paste a job advert. See how well you match, which keywords you’re missing, then get a tailored CV, cover letter, recruiter message and interview prep for that exact job.</p>
+    <p>Upload your CV and paste a job advert. See how well you match and which keywords you’re missing, get a tailored CV, cover letter and interview prep, then review the job offer before you sign.</p>
   </div>
 </section>
 
@@ -269,8 +305,9 @@
     <div id="licenseCard" class="license-card"></div>
     <div class="tool-grid">
       <div class="tool-card">
-        <div class="mode-switch" role="tablist">
+        <div class="mode-switch three" role="tablist">
           <button class="mode-btn active" data-mode="agent" onclick="switchMode('agent')">🎯 Apply for a Job</button>
+          <button class="mode-btn" data-mode="offer" onclick="switchMode('offer')">📑 Review an Offer</button>
           <button class="mode-btn" data-mode="scratch" onclick="switchMode('scratch')">✏️ Build from Scratch</button>
         </div>
 
@@ -319,6 +356,49 @@
           </div>
           <button class="btn-primary" id="analyseBtn" onclick="JobAgent.analyse()">🎯 Analyse My Match</button>
           <p class="cost-note">Analysis uses 1 of your monthly generations; each document uses 1 more.</p>
+        </div>
+
+        <!-- ═════ REVIEW A JOB OFFER ═════ -->
+        <div id="offerMode" style="display:none">
+          <div class="step-head"><span class="step-num">1</span> Your offer or contract</div>
+          <input type="file" id="offerFile" accept=".pdf,.docx,.txt,.jpg,.jpeg,.png,.webp,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*" hidden>
+          <div class="upload-zone" id="offerZone" role="button" tabindex="0">
+            <span class="uz-icon">📑</span>
+            <div class="uz-main"><b>Upload the offer letter or contract</b> or drag it here</div>
+            <div class="uz-sub">PDF, Word (.docx), photo or text · English or Arabic · up to 3 MB</div>
+          </div>
+          <div class="file-chip" id="offerChip">
+            <span class="fc-icon" id="offerChipIcon">📑</span>
+            <div class="fc-info"><div class="fc-name" id="offerChipName"></div><div class="fc-meta" id="offerChipMeta"></div></div>
+            <button type="button" class="fc-remove" onclick="OfferReview.clearFile()" aria-label="Remove file">✕</button>
+          </div>
+          <div class="upload-msg" id="offerMsg"></div>
+          <details class="paste-cv" id="pasteOfferBox">
+            <summary>Or paste the offer text instead</summary>
+            <textarea id="offerText" placeholder="Paste the full text of the offer letter or contract..."></textarea>
+          </details>
+          <div class="privacy-note">🔒 Your document is only used to create your review; Crypode doesn't store it.</div>
+
+          <div class="step-head"><span class="step-num">2</span> Details</div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="offerCountry">Country of the job</label>
+              <select id="offerCountry">
+                <option>Oman</option><option>United Arab Emirates</option><option>Saudi Arabia</option>
+                <option>Qatar</option><option>Kuwait</option><option>Bahrain</option><option>Other / International</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="offerLang">Explain in</label>
+              <select id="offerLang"><option value="English">English</option><option value="Arabic">العربية (Arabic)</option></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="offerConcerns">Anything you're unsure about? <span class="opt">optional</span></label>
+            <textarea id="offerConcerns" placeholder="E.g. 'Is the notice period normal?', 'What does clause 9 mean?', 'Is the housing allowance included in my gratuity?'"></textarea>
+          </div>
+          <button class="btn-primary" onclick="OfferReview.review()">📑 Review My Offer</button>
+          <p class="cost-note">Uses 1 of your monthly generations. An educational explanation, not legal advice.</p>
         </div>
 
         <!-- ═════ BUILD FROM SCRATCH ═════ -->
@@ -914,6 +994,7 @@ const JobAgent = (() => {
 - Never output placeholders such as [Company Name], [X], [Date], [Your Name] or "Insert...". If a detail is missing, leave it out or write around it.
 - Never claim a skill or experience the CV doesn't show. Where the job asks for something the candidate lacks, leave it out of the documents.
 - Write for the ${country} job market, in a professional Gulf business tone. Write in ${lang}${lang === 'English' ? ' with British spelling' : ''}.
+- Never speculate about the candidate's visa, residency or work-permit status, and never suggest that education or past travel grants work rights; if the job requires work authorisation, only note it as something to clarify.
 - Output only what is asked for: no introduction, no commentary, no closing remarks.`;
 
   async function ask(prompt, { file, maxTokens } = {}) {
@@ -971,7 +1052,7 @@ Return ONLY valid JSON (no code fences, no text before or after) with exactly th
   "gaps": ["up to 4 short points"],
   "cv_text": ${needText ? '"the complete text of the CV, faithfully transcribed with all details, as plain text with line breaks"' : '""'}
 }
-Use at most 10 missing_keywords, most important first. Never invent facts about the candidate.`;
+Use at most 10 missing_keywords, most important first. Never invent facts about the candidate. Never speculate about visa, residency or work-permit status, and never suggest that education grants work rights; if the advert requires work authorisation the CV doesn't show, simply advise the candidate to clarify their eligibility.`;
     try {
       const raw = await ask(prompt, { file: needText ? S.cv : null, maxTokens: needText ? 4000 : 2000 });
       let a; try { a = parseJson(raw); } catch (e) { throw { user: 'The analysis came back in an unexpected format. Please try again.' }; }
@@ -1104,7 +1185,8 @@ ${RULES(S.inputs.lang, S.inputs.country)}` }
     if (S.busy[k]) h += `<div class="doc-loading">Writing your ${d.label.toLowerCase()}…</div>`;
     else if (!S.docs[k]) {
       const remaining = Object.keys(DOCS).filter(x => !S.docs[x]).length;
-      h += `<div class="doc-empty">${esc(d.blurb)}<br><button class="btn-primary" onclick="JobAgent.generate('${k}')">${d.icon} Create ${d.label}</button>
+      const weak = a.match_score < 35 && !Object.keys(S.docs).length;
+      h += `${weak ? `<div class="weak-note">⚠️ This is a weak match (${a.match_score}%). Tailored documents can’t add experience you don’t have, so you may get better results from a role closer to your background. You can still create them below.</div>` : ''}<div class="doc-empty">${esc(d.blurb)}<br><button class="btn-primary" onclick="JobAgent.generate('${k}')">${d.icon} Create ${d.label}</button>
         ${remaining > 1 ? `<div style="margin-top:10px"><button class="btn-ghost-sm" onclick="JobAgent.generateAll()">Create all ${remaining} (uses ${remaining})</button></div>` : ''}</div>`;
     } else if (k === 'cover') {
       const c = splitCover(S.docs.cover);
@@ -1134,7 +1216,7 @@ ${RULES(S.inputs.lang, S.inputs.country)}` }
     zone.addEventListener('drop', e => handleCv(e.dataTransfer.files[0]));
     restore(); render();
   });
-  return { analyse, generate, generateAll, tab, copy, word, print, newJob, reset, clearCv, render, _state: () => S };
+  return { analyse, generate, generateAll, tab, copy, word, print, newJob, reset, clearCv, render, _state: () => S, _ask: ask, _parseJson: parseJson, _shrink: shrinkImage, _mammoth: loadMammoth };
 })();
 
 /* mode switching: agent vs build-from-scratch share the right-hand panel */
@@ -1143,11 +1225,174 @@ function switchMode(mode) {
   currentMode = mode;
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
   document.getElementById('agentMode').style.display = mode === 'agent' ? '' : 'none';
+  document.getElementById('offerMode').style.display = mode === 'offer' ? '' : 'none';
   document.getElementById('scratchMode').style.display = mode === 'scratch' ? '' : 'none';
-  document.getElementById('rightTitle').textContent = mode === 'agent' ? 'Your Application' : 'Your Document';
+  document.getElementById('rightTitle').textContent = { agent: 'Your Application', offer: 'Your Offer Review', scratch: 'Your Document' }[mode];
   if (mode === 'agent') JobAgent.render();
+  else if (mode === 'offer') OfferReview.render();
   else document.getElementById('resultsContainer').innerHTML = '<p class="placeholder">Fill in your details and generate your document</p>';
 }
+
+</script>
+<script>
+/* ══════════ Job Offer Review ══════════ */
+const OfferReview = (() => {
+  const MAX_UPLOAD = 3 * 1024 * 1024, STORE = 'crypode_offer_v1';
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const kb = n => n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+  const readAs = (file, how) => new Promise((ok, bad) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = bad; r[how](file); });
+  let S = { file: null, text: '', inputs: null, result: null, busy: false, err: '' };
+
+  function save() { try { localStorage.setItem(STORE, JSON.stringify({ inputs: S.inputs, result: S.result, fileMeta: S.file ? { name: S.file.name, kind: S.file.kind, size: S.file.size } : null })); } catch (e) {} }
+  function restore() {
+    try {
+      const k = JSON.parse(localStorage.getItem(STORE) || 'null'); if (!k) return;
+      S.inputs = k.inputs; S.result = k.result;
+      if (S.inputs) { $('offerCountry').value = S.inputs.country || 'Oman'; $('offerLang').value = S.inputs.lang || 'English'; $('offerConcerns').value = S.inputs.concerns || ''; }
+      if (k.fileMeta) { S.file = { ...k.fileMeta, restored: true }; chip(S.file); }
+    } catch (e) {}
+  }
+  function msg(t, err) { const m = $('offerMsg'); m.textContent = t || ''; m.className = 'upload-msg' + (err ? ' err' : ''); }
+  function chip(f) {
+    $('offerChipIcon').textContent = { pdf: '📑', image: '🖼️', text: '📝' }[f.kind] || '📑';
+    $('offerChipName').textContent = f.name;
+    $('offerChipMeta').textContent = `${{ pdf: 'PDF', image: 'Photo', text: 'Text extracted' }[f.kind] || ''} · ${kb(f.size || 0)}${f.restored ? ' · from your last session' : ''}`;
+    $('offerChip').classList.add('show'); $('offerZone').style.display = 'none';
+  }
+  function clearFile() { S.file = null; $('offerFile').value = ''; $('offerChip').classList.remove('show'); $('offerZone').style.display = ''; msg(''); }
+  async function handle(file) {
+    if (!file) return; msg('');
+    const name = file.name || 'offer', ext = name.split('.').pop().toLowerCase();
+    try {
+      if (ext === 'pdf' || file.type === 'application/pdf') {
+        if (file.size > MAX_UPLOAD) return msg('That PDF is over 3 MB. Try uploading just the pages with the terms, or paste the text instead.', true);
+        S.file = { name, kind: 'pdf', type: 'application/pdf', data: (await readAs(file, 'readAsDataURL')).split(',')[1], size: file.size }; S.text = ''; return chip(S.file);
+      }
+      if (ext === 'docx') {
+        msg('Reading your Word document…');
+        let m; try { m = await JobAgent._mammoth(); } catch (e) { return msg("Couldn't open Word files right now. Please save it as PDF, or paste the text instead.", true); }
+        const t = ((await m.extractRawText({ arrayBuffer: await readAs(file, 'readAsArrayBuffer') })).value || '').trim();
+        if (t.length < 80) return msg('That Word file seems to be mostly empty or images. Please save it as PDF instead.', true);
+        S.file = { name, kind: 'text', size: file.size }; S.text = t; $('offerText').value = t; msg(''); return chip(S.file);
+      }
+      if (ext === 'doc') return msg('Older .doc files can\u2019t be read here. Please save it as .docx or PDF.', true);
+      if (/^image\//.test(file.type) || ['jpg', 'jpeg', 'png', 'webp'].includes(ext)) {
+        const r = await JobAgent._shrink(file); if (!r) return msg('That photo is too large. Please try a smaller one.', true);
+        S.file = { name, kind: 'image', type: 'image/jpeg', data: r.data, size: r.size }; S.text = ''; return chip(S.file);
+      }
+      if (ext === 'txt' || /^text\//.test(file.type)) {
+        const t = (await readAs(file, 'readAsText')).trim(); S.file = { name, kind: 'text', size: file.size }; S.text = t; $('offerText').value = t; return chip(S.file);
+      }
+      msg('Please upload a PDF, Word (.docx), photo or text file.', true);
+    } catch (e) { msg("Couldn't read that file. Please try again.", true); }
+  }
+
+  async function review() {
+    if (!CrypodeLicense.requireUnlocked()) return;
+    const pasted = $('offerText').value.trim();
+    if (!S.file && pasted) S.text = pasted;
+    if (S.file && S.file.kind === 'text') S.text = pasted || S.text;
+    if (!S.file && !S.text) return fail('Please upload the offer or contract, or paste its text.');
+    if (S.file && S.file.restored && !S.file.data && !S.text) return fail('Please upload the document again (files aren\u2019t kept between visits).');
+    if (S.text && S.text.length < 150) return fail('The offer text looks too short. Please paste the full offer or contract.');
+    S.inputs = { country: $('offerCountry').value, lang: $('offerLang').value, concerns: $('offerConcerns').value.trim() };
+    const C = S.inputs.country;
+    S.result = null; S.err = ''; S.busy = true; render();
+    const doc = S.text ? `THE DOCUMENT:\n"""\n${S.text}\n"""` : 'THE DOCUMENT: see the attached file.';
+    const prompt = `You are an experienced Gulf HR adviser explaining a job offer or employment contract to the employee, in plain language. The job is in ${C}. Write all explanations in ${S.inputs.lang}${S.inputs.lang === 'English' ? ' (British spelling)' : ''}. The document may be in English, Arabic or both.
+
+${doc}
+${S.inputs.concerns ? `\nTHE EMPLOYEE'S OWN QUESTIONS:\n"""\n${S.inputs.concerns}\n"""\n` : ''}
+Return ONLY valid JSON (no code fences, no text before or after):
+{
+  "employer": "employer name, or empty string",
+  "role": "job title, or empty string",
+  "currency": "3-letter currency code as stated (e.g. OMR, AED, SAR), or empty string",
+  "summary": "2-3 sentences: what this offer is and the most important things to know",
+  "package": [{"item": "e.g. Basic salary, Housing allowance", "monthly": number or null, "is_basic": true or false, "note": "short note, or empty string"}],
+  "annual_extras": [{"item": "e.g. Annual return flight, Schooling allowance, Bonus", "detail": "as stated in the document"}],
+  "key_terms": [{"term": "short name", "detail": "plain-language summary", "quote": "exact short quote from the document (max 20 words), or empty string"}],
+  "watch_points": [{"level": "high|medium|info", "title": "short title", "explanation": "what it means for the employee", "ask": "a polite question the employee could ask the employer"}],
+  "not_mentioned": ["important items the document doesn't cover"],
+  "questions_to_ask": ["4-8 clear questions to send to the employer before signing"],
+  "answers_to_concerns": "answer the employee's own questions using the document, or empty string if none"
+}
+RULES (follow strictly):
+- Every amount and term must come from the document. If something isn't stated, use null or leave it out. Never guess or estimate amounts.
+- "package" lists monthly cash items only. Convert an annual or weekly amount to monthly only if the document states it clearly, and say so in the note. Set is_basic true only for the basic salary.
+- Look for: contract type and duration, start date, job title, place of work, working hours and days, overtime, probation, notice period, annual leave, public holidays, sick leave, medical insurance, end-of-service benefits, bonus or commission, housing, transport, flights, schooling, relocation, repayment of training or relocation costs, non-compete, confidentiality, deductions or penalties, termination, governing law.
+- Watch points: flag clauses that are unusual, one-sided, vague or costly for the employee (for example cost-repayment clauses, broad non-competes, purely discretionary bonuses, unpaid overtime, a low basic salary within the package, unclear end-of-service terms). Use "info" for neutral but important points. Order by importance.
+- This is an educational explanation, not legal advice. Never state that a clause is legal or illegal and never cite labour-law article numbers. Where relevant, suggest checking how a term compares with the labour law of ${C}, or asking the Ministry of Labour.
+- Never speculate about visa or residency matters beyond what the document says.`;
+    try {
+      const raw = await JobAgent._ask(prompt, { file: S.text ? null : S.file, maxTokens: 3500 });
+      let r; try { r = JobAgent._parseJson(raw); } catch (e) { throw { user: 'The review came back in an unexpected format. Please try again.' }; }
+      S.result = r;
+    } catch (e) { S.err = e.user || 'Something went wrong. Please try again.'; }
+    S.busy = false; save(); render(); CrypodeUsage.note();
+  }
+
+  function fail(t) { S.err = t; render(); }
+  const dp = c => ['OMR', 'KWD', 'BHD'].includes((c || '').toUpperCase()) ? 3 : 2;
+  const money = (n, c) => (n == null || isNaN(n)) ? '—' : Number(n).toLocaleString('en-US', { minimumFractionDigits: dp(c), maximumFractionDigits: dp(c) }) + (c ? ' ' + c : '');
+  function body(forPrint) {
+    const r = S.result, c = (r.currency || '').toUpperCase(), C = S.inputs.country, ar = S.inputs.lang === 'Arabic';
+    const dir = ar ? ' dir="rtl"' : '';
+    const pkg = (r.package || []).filter(p => p && p.item);
+    const nums = pkg.filter(p => typeof p.monthly === 'number' && !isNaN(p.monthly));
+    const total = nums.reduce((s, p) => s + p.monthly, 0);
+    const basic = nums.filter(p => p.is_basic).reduce((s, p) => s + p.monthly, 0);
+    const share = total > 0 && basic > 0 ? Math.round(basic / total * 100) : null;
+    const gratLaw = /Oman|United Arab Emirates/.test(C)
+      ? `In ${C === 'Oman' ? 'Oman' : 'the UAE'}, end-of-service gratuity is calculated on basic salary`
+      : `In many Gulf countries, end-of-service benefits are linked to basic salary (check how they're calculated in ${esc(C)})`;
+    let h = `<div class="result-box" style="margin-top:0"${dir}>
+      <div class="match-role">${[r.role, r.employer].filter(Boolean).map(esc).join(' · ') || 'Your offer'}</div>
+      <p class="match-summary" style="margin-top:8px">${esc(r.summary)}</p></div>`;
+    if (pkg.length) {
+      h += `<div class="result-box"${dir}><h3>Monthly package</h3><table class="pkg-table">${pkg.map(p => `<tr><td>${esc(p.item)}${p.note ? `<small>${esc(p.note)}</small>` : ''}</td><td class="amt">${money(p.monthly, c)}</td></tr>`).join('')}
+        ${nums.length > 1 ? `<tr class="total"><td>Total monthly (stated items)</td><td class="amt">${money(total, c)}</td></tr>` : ''}</table>
+        ${share !== null ? `<div class="mini-head">Basic salary share</div>${forPrint ? '' : `<div class="basic-bar"><span style="width:${share}%"></span></div>`}
+          <p class="basic-note"><b>${share}%</b> of the monthly package is basic salary (${money(basic, c)} of ${money(total, c)}). ${gratLaw}, so it would be based on ${money(basic, c)} a month, not the full package.</p>` : ''}
+        ${(r.annual_extras || []).length ? `<div class="mini-head">Annual and other benefits</div><ul class="plain-list">${r.annual_extras.map(x => `<li><b>${esc(x.item)}:</b> ${esc(x.detail)}</li>`).join('')}</ul>` : ''}</div>`;
+    }
+    if ((r.key_terms || []).length) h += `<div class="result-box"${dir}><h3>Key terms</h3><ul class="term-list">${r.key_terms.map(t => `<li><b>${esc(t.term)}</b> ${esc(t.detail)}${t.quote ? `<span class="quote">“${esc(t.quote)}”</span>` : ''}</li>`).join('')}</ul></div>`;
+    if ((r.watch_points || []).length) h += `<div class="result-box"${dir}><h3>Points to check</h3>${r.watch_points.map(w => `<div class="watch ${['high','medium','info'].includes(w.level) ? w.level : 'info'}"><h5>${w.level === 'high' ? '⚠️ ' : w.level === 'medium' ? '• ' : 'ℹ️ '}${esc(w.title)}</h5><p>${esc(w.explanation)}</p>${w.ask ? `<div class="ask">Ask: ${esc(w.ask)}</div>` : ''}</div>`).join('')}</div>`;
+    if ((r.not_mentioned || []).length) h += `<div class="result-box"${dir}><h3>Not mentioned in the document</h3><div class="chips">${r.not_mentioned.map(x => `<span class="chip miss">${esc(x)}</span>`).join('')}</div></div>`;
+    if (r.answers_to_concerns) h += `<div class="result-box"${dir}><h3>Your questions</h3><div class="output-text cp-screen">${CrypodePrint.md(r.answers_to_concerns)}</div></div>`;
+    if ((r.questions_to_ask || []).length) h += `<div class="result-box"${dir}><h3>Questions to ask before signing</h3><ol class="plain-list">${r.questions_to_ask.map(q => `<li>${esc(q)}</li>`).join('')}</ol></div>`;
+    if (!forPrint && C === 'Oman') h += `<div class="grat-cta"><span>Want to know what this job's end-of-service gratuity could be worth?</span><a href="https://gratuity.crypode.com" target="_blank" rel="noopener">Gratuity Calculator →</a></div>`;
+    h += `<p class="legal-note">This is an educational explanation of the document, not legal advice. For anything important, check with the employer, the Ministry of Labour${C !== 'Other / International' ? ' in ' + esc(C) : ''}, or a qualified lawyer before signing.</p>`;
+    return h;
+  }
+  function render() {
+    if (currentMode !== 'offer') return;
+    const box = $('resultsContainer'), err = S.err ? `<p class="inline-err">${esc(S.err)}</p>` : '';
+    if (S.busy) { box.innerHTML = `<div class="doc-loading">Reading your offer… this can take up to a minute.</div>`; return; }
+    if (!S.result) { box.innerHTML = err + `<p class="placeholder">Upload your job offer or contract, then click <b>Review My Offer</b>.</p>`; return; }
+    box.innerHTML = err + body(false) + `<div class="agent-actions"><button class="btn-primary" onclick="OfferReview.print()">🖨️ Print / Save PDF</button><button class="btn-ghost-sm" onclick="OfferReview.copyQuestions(this)">📋 Copy questions</button></div>
+      <div class="app-bar"><button onclick="OfferReview.newReview()">＋ Review another offer</button></div>`;
+  }
+  function print() {
+    CrypodePrint.print({ title: 'Job Offer Review', bodyHtml: body(true), branded: true, lang: S.inputs.lang === 'Arabic' ? 'ar' : 'en', dir: S.inputs.lang === 'Arabic' ? 'rtl' : 'ltr',
+      disclaimer: 'An educational explanation prepared with Crypode\u2019s Job Application Agent, based on the document provided. It is not legal advice.' });
+  }
+  function copyQuestions(btn) { CrypodePrint.copy((S.result.questions_to_ask || []).map((q, i) => `${i + 1}. ${q}`).join('\n'), btn); }
+  function newReview() { S.result = null; S.err = ''; S.text = ''; clearFile(); $('offerText').value = ''; $('offerConcerns').value = ''; save(); render(); }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const zone = $('offerZone'), input = $('offerFile');
+    zone.addEventListener('click', () => input.click());
+    zone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } });
+    input.addEventListener('change', () => handle(input.files[0]));
+    ['dragenter', 'dragover'].forEach(ev => zone.addEventListener(ev, e => { e.preventDefault(); zone.classList.add('drag'); }));
+    ['dragleave', 'drop'].forEach(ev => zone.addEventListener(ev, e => { e.preventDefault(); zone.classList.remove('drag'); }));
+    zone.addEventListener('drop', e => handle(e.dataTransfer.files[0]));
+    restore();
+  });
+  return { review, render, print, copyQuestions, newReview, clearFile, _state: () => S };
+})();
 
 </script>
 </body>
