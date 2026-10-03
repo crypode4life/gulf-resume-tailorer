@@ -997,6 +997,7 @@ const JobAgent = (() => {
 - Never speculate about the candidate's visa, residency or work-permit status, and never suggest that education or past travel grants work rights; if the job requires work authorisation, only note it as something to clarify.
 - Output only what is asked for: no introduction, no commentary, no closing remarks.`;
 
+  let lastStop = '';
   async function ask(prompt, { file, maxTokens } = {}) {
     const response = await fetch('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt, license: CrypodeLicense.key, max_tokens: maxTokens, file: file ? { type: file.type, data: file.data } : undefined }) });
@@ -1005,13 +1006,30 @@ const JobAgent = (() => {
     if (CrypodeLicense.handleRejected(response.status, result)) throw { user: 'Please unlock the tool with your licence key first.' };
     const fu = CrypodeUsage.refused(result); if (fu) throw { user: fu };
     CrypodeUsage.remember(result);
+    lastStop = result.stop_reason || '';
     const t = (result.content || []).find(b => b.type === 'text');
     if (!t) throw { user: 'The AI didn\u2019t return an answer. Please try again.' };
     return t.text.trim();
   }
   function parseJson(t) {
     t = t.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
-    const a = t.indexOf('{'), b = t.lastIndexOf('}'); return JSON.parse(t.slice(a, b + 1));
+    const a = t.indexOf('{'); if (a < 0) throw new Error('no json');
+    t = t.slice(a);
+    try { return JSON.parse(t.slice(0, t.lastIndexOf('}') + 1)); } catch (e) {}
+    // Answer was cut off: find the last points where the data was complete, close the open brackets, and parse
+    const cuts = []; const stack = []; let inStr = false, esc = false;
+    for (let i = 0; i < t.length; i++) {
+      const ch = t[i];
+      if (inStr) { if (esc) esc = false; else if (ch === '\\') esc = true; else if (ch === '"') inStr = false; continue; }
+      if (ch === '"') inStr = true;
+      else if (ch === '{') stack.push('}'); else if (ch === '[') stack.push(']');
+      else if (ch === '}' || ch === ']') { stack.pop(); cuts.push({ at: i + 1, close: stack.slice().reverse().join('') }); }
+      else if (ch === ',') cuts.push({ at: i, close: stack.slice().reverse().join('') });
+    }
+    for (let k = cuts.length - 1; k >= 0; k--) {
+      try { const o = JSON.parse(t.slice(0, cuts[k].at) + cuts[k].close); o._incomplete = true; return o; } catch (e) {}
+    }
+    throw new Error('unreadable json');
   }
   const cvBlock = () => S.cvText ? `CANDIDATE'S CV:\n"""\n${S.cvText}\n"""` : `CANDIDATE'S CV: see the attached document.`;
   const jobBlock = () => `JOB ADVERT:\n"""\n${S.inputs.jobAd}\n"""`;
@@ -1056,6 +1074,7 @@ Use at most 10 missing_keywords, most important first. Never invent facts about 
     try {
       const raw = await ask(prompt, { file: needText ? S.cv : null, maxTokens: needText ? 4000 : 2000 });
       let a; try { a = parseJson(raw); } catch (e) { throw { user: 'The analysis came back in an unexpected format. Please try again.' }; }
+      if (a.match_score == null) throw { user: 'The analysis was cut short. Please try again.' };
       a.match_score = Math.max(0, Math.min(100, parseInt(a.match_score, 10) || 0));
       if (needText && a.cv_text && a.cv_text.length > 150) S.cvText = a.cv_text.trim();
       delete a.cv_text;
@@ -1216,7 +1235,7 @@ ${RULES(S.inputs.lang, S.inputs.country)}` }
     zone.addEventListener('drop', e => handleCv(e.dataTransfer.files[0]));
     restore(); render();
   });
-  return { analyse, generate, generateAll, tab, copy, word, print, newJob, reset, clearCv, render, _state: () => S, _ask: ask, _parseJson: parseJson, _shrink: shrinkImage, _mammoth: loadMammoth };
+  return { analyse, generate, generateAll, tab, copy, word, print, newJob, reset, clearCv, render, _state: () => S, _ask: ask, _parseJson: parseJson, _lastStop: () => lastStop, _shrink: shrinkImage, _mammoth: loadMammoth };
 })();
 
 /* mode switching: agent vs build-from-scratch share the right-hand panel */
@@ -1315,7 +1334,7 @@ Return ONLY valid JSON (no code fences, no text before or after):
   "key_terms": [{"term": "short name", "detail": "plain-language summary", "quote": "exact short quote from the document (max 20 words), or empty string"}],
   "watch_points": [{"level": "high|medium|info", "title": "short title", "explanation": "what it means for the employee", "ask": "a polite question the employee could ask the employer"}],
   "not_mentioned": ["important items the document doesn't cover"],
-  "questions_to_ask": ["4-8 clear questions to send to the employer before signing"],
+  "questions_to_ask": ["4-6 clear questions to send to the employer before signing"],
   "answers_to_concerns": "answer the employee's own questions using the document, or empty string if none"
 }
 RULES (follow strictly):
@@ -1323,10 +1342,11 @@ RULES (follow strictly):
 - "package" lists monthly cash items only. Convert an annual or weekly amount to monthly only if the document states it clearly, and say so in the note. Set is_basic true only for the basic salary.
 - Look for: contract type and duration, start date, job title, place of work, working hours and days, overtime, probation, notice period, annual leave, public holidays, sick leave, medical insurance, end-of-service benefits, bonus or commission, housing, transport, flights, schooling, relocation, repayment of training or relocation costs, non-compete, confidentiality, deductions or penalties, termination, governing law.
 - Watch points: flag clauses that are unusual, one-sided, vague or costly for the employee (for example cost-repayment clauses, broad non-competes, purely discretionary bonuses, unpaid overtime, a low basic salary within the package, unclear end-of-service terms). Use "info" for neutral but important points. Order by importance.
+- Keep the whole answer compact: summary at most 3 sentences; at most 12 key_terms; at most 8 watch_points, each explanation at most 2 sentences; quotes at most 15 words; at most 8 not_mentioned items; 4-6 questions_to_ask; answers_to_concerns at most 120 words. Prioritise what matters most to the employee.
 - This is an educational explanation, not legal advice. Never state that a clause is legal or illegal and never cite labour-law article numbers. Where relevant, suggest checking how a term compares with the labour law of ${C}, or asking the Ministry of Labour.
 - Never speculate about visa or residency matters beyond what the document says.`;
     try {
-      const raw = await JobAgent._ask(prompt, { file: S.text ? null : S.file, maxTokens: 3500 });
+      const raw = await JobAgent._ask(prompt, { file: S.text ? null : S.file, maxTokens: 4000 });
       let r; try { r = JobAgent._parseJson(raw); } catch (e) { throw { user: 'The review came back in an unexpected format. Please try again.' }; }
       S.result = r;
     } catch (e) { S.err = e.user || 'Something went wrong. Please try again.'; }
@@ -1371,7 +1391,8 @@ RULES (follow strictly):
     const box = $('resultsContainer'), err = S.err ? `<p class="inline-err">${esc(S.err)}</p>` : '';
     if (S.busy) { box.innerHTML = `<div class="doc-loading">Reading your offer… this can take up to a minute.</div>`; return; }
     if (!S.result) { box.innerHTML = err + `<p class="placeholder">Upload your job offer or contract, then click <b>Review My Offer</b>.</p>`; return; }
-    box.innerHTML = err + body(false) + `<div class="agent-actions"><button class="btn-primary" onclick="OfferReview.print()">🖨️ Print / Save PDF</button><button class="btn-ghost-sm" onclick="OfferReview.copyQuestions(this)">📋 Copy questions</button></div>
+    const partial = S.result._incomplete ? `<p class="weak-note">This was a long document, so the review may be incomplete. The sections shown are complete; you can run the review again for the rest.</p>` : '';
+    box.innerHTML = err + partial + body(false) + `<div class="agent-actions"><button class="btn-primary" onclick="OfferReview.print()">🖨️ Print / Save PDF</button><button class="btn-ghost-sm" onclick="OfferReview.copyQuestions(this)">📋 Copy questions</button></div>
       <div class="app-bar"><button onclick="OfferReview.newReview()">＋ Review another offer</button></div>`;
   }
   function print() {
